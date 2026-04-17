@@ -12,7 +12,6 @@ class Booking extends Model
 
     protected $table = 'booking';
 
-    // Inilah daftar kolom yang "diizinkan" untuk diisi secara massal
     protected $fillable = [
         'user_id',
         'layanan_id',
@@ -23,11 +22,11 @@ class Booking extends Model
         'metode_pembayaran',
         'status_booking',
         'bukti_pembayaran',
+        'total_price', // Kolom baru untuk harga setelah diskon
     ];
 
     public function user(): BelongsTo
     {
-        // Tetap pakai user karena mengikuti kolom user_id
         return $this->belongsTo(User::class, 'user_id');
     }
 

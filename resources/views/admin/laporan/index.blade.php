@@ -27,7 +27,9 @@
             </div>
             <div class="bg-white p-7 rounded-[2.5rem] shadow-sm border border-gray-50">
                 <p class="text-gray-400 text-xs uppercase font-bold tracking-widest">Layanan Terlaris</p>
-                <h3 class="text-lg font-bold text-gray-800 mt-2 truncate">{{ $layananTerlaris->first()->layanan->layanan_name ?? '-' }}</h3>
+                <h3 class="text-lg font-bold text-gray-800 mt-2 truncate">
+                    {{ $layananTerlaris->first()->layanan->layanan_name ?? 'Belum ada data' }}
+                </h3>
             </div>
         </div>
 
@@ -47,9 +49,12 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-50">
-                            @foreach($laporanBooking as $lb)
+                            @forelse($laporanBooking as $lb)
                             <tr>
-                                <td class="py-4 text-gray-500">{{ date('d M Y', strtotime($lb->booking_date)) }}</td>
+                                <td class="py-4 text-gray-500">
+                                    {{-- Menggunakan Carbon untuk Bahasa Indonesia --}}
+                                    {{ \Carbon\Carbon::parse($lb->booking_date)->translatedFormat('d F Y') }}
+                                </td>
                                 <td class="py-4 font-bold text-gray-800">{{ $lb->user->name }}</td>
                                 <td class="py-4 text-gray-600">{{ $lb->layanan->layanan_name }}</td>
                                 <td class="py-4 text-xs font-bold uppercase {{ $lb->location_type == 'home_service' ? 'text-orange-500' : 'text-blue-500' }}">
@@ -57,7 +62,11 @@
                                 </td>
                                 <td class="py-4 text-right font-black text-gray-800">Rp {{ number_format($lb->layanan->price, 0, ',', '.') }}</td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="5" class="py-8 text-center text-gray-400 italic">Tidak ada transaksi pada periode ini.</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -67,7 +76,7 @@
             <div class="bg-[#FDFBF8] rounded-[2.5rem] p-8 border border-orange-50">
                 <h2 class="text-xl font-extrabold text-[#4A3121] mb-6">Top Layanan</h2>
                 <div class="space-y-6">
-                    @foreach($layananTerlaris as $index => $lt)
+                    @forelse($layananTerlaris as $index => $lt)
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <span class="w-6 h-6 flex items-center justify-center bg-[#4A3121] text-white text-[10px] font-bold rounded-full">{{ $index + 1 }}</span>
@@ -75,7 +84,9 @@
                         </div>
                         <p class="text-xs font-black text-orange-600">{{ $lt->total }}x</p>
                     </div>
-                    @endforeach
+                    @empty
+                    <p class="text-sm text-gray-400 italic">Belum ada data.</p>
+                    @endforelse
                 </div>
             </div>
         </div>

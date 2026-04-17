@@ -18,14 +18,13 @@
                             <th class="px-6 py-3">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach($bookings as $item)
+                        <tbody>
+                        @forelse($bookings as $item)
                         <tr class="bg-white shadow-sm rounded-xl overflow-hidden transition hover:shadow-md">
-                            {{-- REVISI: Pakai $item->user->name --}}
                             <td class="px-6 py-4 font-medium text-gray-800">{{ $item->user->name ?? 'User' }}</td>
                             <td class="px-6 py-4 text-gray-600 text-sm">{{ $item->layanan->layanan_name ?? 'Layanan' }}</td>
-                            <td class="px-6 py-4 text-gray-600 text-sm">{{ \Carbon\Carbon::parse($item->booking_date)->format('d/m/Y') }}</td>
-                            <td class="px-6 py-4 text-gray-600 text-sm">{{ \Carbon\Carbon::parse($item->booking_time)->format('H:i') }}</td>
+                            <td class="px-6 py-4 text-gray-600 text-sm">{{ \Carbon\Carbon::parse($item->booking_date)->translatedFormat('d F Y') }}</td>
+                            <td class="px-6 py-4 text-gray-600 text-sm">{{ \Carbon\Carbon::parse($item->booking_time)->format('H:i') }} WIB</td>
                             <td class="px-6 py-4 text-gray-600 text-sm">{{ $item->location_type == 'studio' ? 'Studio' : 'Home Service' }}</td>
                             
                             <td class="px-6 py-4">
@@ -49,6 +48,7 @@
                             </td>
 
                             <td class="px-6 py-4">
+                                {{-- Bagian Dropdown Ubah Status Tetap Sama --}}
                                 <div x-data="{ open: false }" class="relative inline-block text-left">
                                     <button @click="open = !open" class="flex items-center gap-2 bg-gray-50 border border-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-100 transition">
                                         Ubah status
@@ -56,10 +56,10 @@
                                     </button>
 
                                     <div x-show="open" 
-                                         @click.away="open = false" 
-                                         class="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-xl z-50 overflow-hidden"
-                                         style="display: none;"
-                                         x-transition>
+                                        @click.away="open = false" 
+                                        class="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-xl z-50 overflow-hidden"
+                                        style="display: none;"
+                                        x-transition>
                                         
                                         <form action="{{ route('admin.booking.updateStatus', $item->id) }}" method="POST">
                                             @csrf
@@ -87,7 +87,24 @@
                                 </div>
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        {{-- Tampilan saat data kosong --}}
+                        <tr>
+                            <td colspan="7" class="px-6 py-20 text-center">
+                                <div class="flex flex-col items-center justify-center space-y-3">
+                                    <div class="bg-gray-50 p-4 rounded-full">
+                                        <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="text-gray-500">
+                                        <p class="font-bold text-lg">Tidak ada transaksi</p>
+                                        <p class="text-sm">Belum ada data booking yang masuk untuk saat ini.</p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

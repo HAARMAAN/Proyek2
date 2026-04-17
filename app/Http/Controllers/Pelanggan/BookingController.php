@@ -18,25 +18,31 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi data yang masuk dengan ketat
         $request->validate([
             'layanan_id' => 'required|exists:layanan,id',
-            // Mencegah typo tahun ribuan (seperti 20226) dan booking masa lalu
-            'booking_date' => 'required|date|after_or_equal:today|before:2030-12-31',
+            'booking_date' => 'required|date|after_or_equal:today',
             'booking_time' => 'required',
-            // REVISI: Samain isinya dengan yang ada di Blade (studio & home_service)
             'location_type' => 'required|in:studio,home_service', 
             'metode_pembayaran' => 'required',
-        ], [
-            // Custom pesan error biar user nggak pusing liat layar oranye
-            'booking_date.after_or_equal' => 'Masa booking di masa lalu? Move on dong!',
-            'booking_date.before' => 'Tahunnya kejauhan kak, Luna Beauty belum tentu buka di tahun itu.',
-            'location_type.in' => 'Pilih lokasi yang tersedia ya!',
         ]);
 
-        // Simpan ke database
+        $layanan = Layanan::findOrFail($request->layanan_id);
+        $user = Auth::user();
+        $hargaAsli = $layanan->price;
+        $bintang = $user->bintang_loyalitas;
+        $diskon = 0;
+
+        // LOGIKA DISKON STEP-UP & STEP-DOWN
+        if ($bintang >= 5 && $bintang <= 10) {
+            $diskon = 0.5; // Diskon 50%
+        } elseif ($bintang > 10) {
+            $diskon = 0.25; // Diskon 25%
+        }
+
+        $totalBayar = $hargaAsli - ($hargaAsli * $diskon);
+
         Booking::create([
-            'user_id' => Auth::id(),
+            'user_id' => $user->id,
             'layanan_id' => $request->layanan_id,
             'booking_date' => $request->booking_date,
             'booking_time' => $request->booking_time,
@@ -44,6 +50,7 @@ class BookingController extends Controller
             'service_address' => $request->service_address,
             'metode_pembayaran' => $request->metode_pembayaran,
             'status_booking' => 'pending',
+            'total_price' => $totalBayar, // Simpan harga net
         ]);
 
         return redirect()->route('customer.riwayat')->with('success', 'Booking sukses!');
@@ -51,7 +58,6 @@ class BookingController extends Controller
 
     public function riwayat()
     {
-        // Mengambil data booking milik user yang sedang login saja
         $bookings = Booking::where('user_id', Auth::id())->with('layanan')->latest()->get();
         $user = Auth::user();
         return view('pelanggan.booking.riwayat', compact('bookings', 'user'));
