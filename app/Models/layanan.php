@@ -25,6 +25,7 @@ class Layanan extends Model
         'price',
         'category',
         'duration_minutes',
+        'image',
     ];
 
     /**

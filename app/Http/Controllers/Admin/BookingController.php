@@ -6,34 +6,87 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Services\WhatsAppService;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
-    public function index()
+    /**
+     * Menampilkan daftar booking berdasarkan status
+     */
+    public function index(Request $request)
     {
-        $bookings = Booking::with(['user', 'layanan'])->latest()->get();
-        return view('admin.booking.index', compact('bookings'));
+        $query = Booking::with(['user', 'layanan']);
+
+        $status = $request->query('status', 'pending');
+
+        if (in_array($status, ['pending', 'confirmed', 'completed', 'cancelled'])) {
+            $query->where('status_booking', $status);
+        } else {
+            $query->where('status_booking', 'pending');
+        }
+
+        $bookings = $query->latest()->get();
+
+        return view('admin.booking.index', compact('bookings', 'status'));
+    }
+    
+    /**
+     * Menampilkan riwayat booking (selesai/batal)
+     */
+    public function history()
+    {
+        $bookings = Booking::whereIn('status_booking', ['completed', 'cancelled'])
+                    ->with(['user', 'layanan'])
+                    ->latest()
+                    ->get();
+
+        return view('admin.booking.history', compact('bookings'));
     }
 
-    public function updateStatus(Request $request, $id)
+    /**
+     * Update status booking dan kirim notifikasi WA otomatis
+     */
+    public function updateStatus(Request $request, $id, WhatsAppService $waService)
     {
-        $booking = Booking::findOrFail($id);
+        $request->validate([
+            'status_booking' => 'required|in:pending,confirmed,completed,cancelled'
+        ]);
+
+        $booking = Booking::with(['user', 'layanan'])->findOrFail($id);
         $statusLama = $booking->status_booking;
-        $statusBaru = $request->status_booking;
+        
+        // 1. Simpan perubahan status ke database
+        $booking->status_booking = $request->status_booking;
+        $booking->save();
 
-        $booking->update(['status_booking' => $statusBaru]);
-
-        // Trigger penambah bintang hanya jika diubah ke 'completed'
-        if ($statusBaru === 'completed' && $statusLama !== 'completed') {
-            $user = User::find($booking->user_id);
-            if ($user) {
-                $user->increment('bintang_loyalitas');
-                $user->increment('total_kunjungan');
+        /**
+         * 2. Notifikasi WhatsApp
+         * Gue hapus syarat statusLama supaya lu bisa ngetes berkali-kali 
+         * asal status yang dipilih adalah 'confirmed'.
+         */
+        if ($request->status_booking === 'confirmed') {
+            
+            $waSent = $waService->sendBookingConfirmation($booking);
+            
+            if (!$waSent) {
+                // Warning jika Node.js mati atau nomor tidak valid
+                session()->flash('warning', 'Status berhasil diubah, namun notifikasi WhatsApp GAGAL terkirim. Pastikan server Node.js aktif.');
+            } else {
+                // Notif tambahan jika berhasil
+                session()->flash('success_wa', 'Notifikasi WhatsApp berhasil dikirim ke pelanggan.');
             }
         }
 
-        return redirect()->back()->with('success', 'Status booking dan bintang pelanggan diperbarui!');
+        // 3. Logika Loyalitas (Hanya jika status berubah jadi COMPLETED)
+        if ($request->status_booking === 'completed' && $statusLama !== 'completed') {
+            $user = $booking->user; 
+            if ($user) {
+                $user->increment('total_kunjungan');
+                $user->increment('bintang_loyalitas');
+            }
+        }
+
+        return back()->with('success', 'Status booking berhasil diperbarui.');
     }
-    
-    // ... method destroy dll tetap ...
 }

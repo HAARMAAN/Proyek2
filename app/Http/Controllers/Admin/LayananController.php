@@ -26,9 +26,16 @@ class LayananController extends Controller
             'price' => 'required|numeric',
             'category' => 'required|in:single,package',
             'duration_minutes' => 'required|integer',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048', // WAJIB di sini
         ]);
 
-        Layanan::create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('layanan', 'public');
+        }
+
+        Layanan::create($data);
 
         return redirect()->route('admin.layanan.index')->with('success', 'Layanan berhasil ditambahkan');
     }
