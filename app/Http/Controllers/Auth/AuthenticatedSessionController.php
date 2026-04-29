@@ -25,23 +25,26 @@ class AuthenticatedSessionController extends Controller
 
         $remember = $request->boolean('remember');
 
-        // 1. Coba Login via tabel 'users' (Admin & Owi ada di sini)
+        // 1. Coba Login via tabel 'users' (Admin & Pelanggan ada di sini)
         if (Auth::guard('web')->attempt($credentials, $remember)) {
             $request->session()->regenerate();
             $user = Auth::guard('web')->user();
 
-            // CEK ROLE: Kalau role-nya pelanggan (kayak si Owi), lempar ke customer dashboard
+            // CEK ROLE: Kalau pelanggan, lempar ke halaman HOME (yang ada 4 menu)
             if ($user->role === 'pelanggan') {
-                return redirect()->route('customer.dashboard');
+                return redirect()->route('home'); // <-- SUDAH DIGANTI
             }
             
+            // Kalau admin tetap ke dashboard admin
             return redirect()->route('admin.dashboard');
         }
 
         // 2. Coba Login via tabel 'pelanggan' (Guard: pelanggan)
         if (Auth::guard('pelanggan')->attempt($credentials, $remember)) {
             $request->session()->regenerate();
-            return redirect()->route('customer.dashboard');
+            
+            // Lempar ke halaman HOME (yang ada 4 menu)
+            return redirect()->route('home'); // <-- SUDAH DIGANTI
         }
 
         throw ValidationException::withMessages(['email' => __('auth.failed')]);

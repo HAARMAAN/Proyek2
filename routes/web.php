@@ -9,9 +9,27 @@
     use App\Http\Controllers\Pelanggan\PelangganDashboardController;
     use App\Http\Controllers\Pelanggan\BookingController as PelangganBooking;
 
-    Route::get('/', function () {
-        return view('home');
-    });
+    /* HALAMAN UTAMA */
+Route::get('/', function () {
+    return view('home');
+})->name('home');
+
+/* HALAMAN BEBAS (BISA DIBUKA TANPA LOGIN) */
+Route::get('/service', function () {
+    return view('service');
+});
+
+Route::get('/blog', function () {
+    return view('blog');
+});
+
+/* BOOKING HARUS LOGIN */
+Route::get('/booking', function () {
+    return view('booking');
+})->middleware('auth');
+    
+    Route::get('/customer/dashboard', function () {
+    return view('profil_saya'); })->middleware(['auth'])->name('customer.dashboard');
 
     // Pintu Tengah (Switcher)
     Route::get('/dashboard', function () {
