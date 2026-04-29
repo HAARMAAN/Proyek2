@@ -6,8 +6,8 @@
             <p class="text-gray-500 font-medium">Ringkasan statistik dan performa bisnis Luna Beauty</p>
         </div>
 
-        {{-- GRID STATISTIK (Data Dinamis Database) --}}
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {{-- GRID STATISTIK - Sekarang menjadi 3 Kolom agar Rapi --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             
             <div class="bg-white p-7 rounded-[2.5rem] shadow-sm border border-gray-50 relative overflow-hidden transition hover:shadow-md">
                 <div class="flex justify-between items-start mb-4">
@@ -23,7 +23,7 @@
                     <div class="p-3 bg-orange-50 rounded-2xl text-orange-500 text-xl">📅</div>
                     <span class="text-green-500 font-bold text-xs bg-green-50 px-2 py-1 rounded-lg">↗</span>
                 </div>
-                <p class="text-gray-400 text-xs uppercase tracking-widest font-bold">Booking Hari Ini</p>
+                <p class="text-gray-400 text-xs uppercase tracking-widest font-bold">Booking Menunggu</p>
                 <h3 class="text-4xl font-black text-gray-800 mt-1">{{ $bookingMenunggu }}</h3>
             </div>
 
@@ -36,21 +36,11 @@
                 <h3 class="text-4xl font-black text-gray-800 mt-1">{{ $totalBookingSelesai }}</h3>
             </div>
 
-            <div class="bg-[#D9773D] p-7 rounded-[2.5rem] shadow-lg shadow-orange-200 relative overflow-hidden text-white transition hover:scale-[1.02]">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="p-3 bg-white/20 rounded-2xl text-xl text-white">💰</div>
-                    <span class="text-white/80 font-bold text-xs">Total</span>
-                </div>
-                <p class="text-orange-100 text-xs uppercase tracking-widest font-bold">Estimasi Pendapatan</p>
-                <h3 class="text-2xl font-black mt-1 italic">
-                    Rp {{ number_format($totalPendapatan, 0, ',', '.') }}
-                </h3>
-                <p class="text-[10px] text-orange-200 mt-2 opacity-70">*Berdasarkan treatment selesai</p>
-            </div>
+            {{-- Kartu Estimasi Pendapatan SUDAH DIHAPUS --}}
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {{-- TABEL BOOKING TERBARU (Looping Database) --}}
+            {{-- TABEL BOOKING TERBARU --}}
             <div class="bg-white rounded-[2.5rem] shadow-sm p-8 border border-gray-50">
                 <div class="flex justify-between items-center mb-8">
                     <h2 class="text-xl font-extrabold text-[#4A3121]">Booking Terbaru</h2>
@@ -82,7 +72,7 @@
                 </div>
             </div>
 
-            {{-- SECTION TAMBAHAN: LAYANAN TERLARIS (Atau Top Pelanggan) --}}
+            {{-- INFORMASI LAYANAN --}}
             <div class="bg-white rounded-[2.5rem] shadow-sm p-8 border border-gray-50">
                 <h2 class="text-xl font-extrabold text-[#4A3121] mb-8">Informasi Layanan</h2>
                 <div class="flex flex-col items-center justify-center py-10 text-center">

@@ -1,66 +1,58 @@
 @extends('layouts.customer')
 
 @section('content')
-<div style="position: absolute; left: 542px; top: 50px; width: 693px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);">
-    <h2 style="font-family: 'Erica One'; font-size: 25px; margin-bottom: 20px; color: #333;">FORM BOOKING LAYANAN</h2>
+<div style="background: white; padding: 40px; border-radius: 25px; box-shadow: 0px 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 800px; margin: 0 auto;">
+    <h2 style="font-family: 'Erica One'; font-size: 28px; margin-bottom: 30px; color: #333; text-align: center; letter-spacing: 2px;">FORM BOOKING LAYANAN</h2>
     
     <form action="{{ route('customer.booking.store') }}" method="POST">
         @csrf
         
-        <div style="margin-bottom: 15px;">
-            <label style="display:block; font-family: 'Jost'; font-weight: bold;">Pilih Layanan:</label>
-            <select name="layanan_id" required style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid {{ $errors->has('layanan_id') ? 'red' : '#ccc' }};">
+        <div style="margin-bottom: 20px;">
+            <label style="display:block; font-family: 'Jost'; font-weight: bold; margin-bottom: 8px;">Pilih Layanan:</label>
+            <select name="layanan_id" required style="width: 100%; padding: 12px; border-radius: 10px;">
                 <option value="">-- Pilih Layanan --</option>
                 @foreach($layanans as $l)
-                    <option value="{{ $l->id }}" {{ old('layanan_id') == $l->id ? 'selected' : '' }}>
+                    {{-- Gunakan old() untuk menangkap input sebelumnya, atau $layanan_id dari URL sebagai cadangan --}}
+                    <option value="{{ $l->id }}" {{ (old('layanan_id', $layanan_id) == $l->id) ? 'selected' : '' }}>
                         {{ $l->layanan_name }} - Rp {{ number_format($l->price, 0, ',', '.') }}
                     </option>
                 @endforeach
             </select>
-            @error('layanan_id') <small style="color: red;">{{ $message }}</small> @enderror
         </div>
 
-        <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+        <div style="display: flex; gap: 20px; margin-bottom: 20px;">
             <div style="flex: 1;">
-                <label style="display:block; font-family: 'Jost'; font-weight: bold;">Tanggal:</label>
-                <input type="date" name="booking_date" value="{{ old('booking_date') }}" required 
-                    style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid {{ $errors->has('booking_date') ? 'red' : '#ccc' }};">
-                @error('booking_date') <small style="color: red; display: block; margin-top: 5px;">{{ $message }}</small> @enderror
+                <label style="display:block; font-family: 'Jost'; font-weight: bold; margin-bottom: 8px;">Tanggal:</label>
+                <input type="date" name="booking_date" value="{{ old('booking_date') }}" required style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd;">
             </div>
-            
             <div style="flex: 1;">
-                <label style="display:block; font-family: 'Jost'; font-weight: bold;">Jam:</label>
-                <input type="time" name="booking_time" value="{{ old('booking_time') }}" required 
-                    style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid {{ $errors->has('booking_time') ? 'red' : '#ccc' }};">
-                @error('booking_time') <small style="color: red; display: block; margin-top: 5px;">{{ $message }}</small> @enderror
+                <label style="display:block; font-family: 'Jost'; font-weight: bold; margin-bottom: 8px;">Jam:</label>
+                <input type="time" name="booking_time" value="{{ old('booking_time') }}" required style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd;">
             </div>
-        </div>
-
-        <div style="margin-bottom: 15px;">
-            <label style="display:block; font-family: 'Jost'; font-weight: bold;">Tipe Lokasi:</label>
-            <select name="location_type" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid {{ $errors->has('location_type') ? 'red' : '#ccc' }};">
-                <option value="studio" {{ old('location_type') == 'studio' ? 'selected' : '' }}>Datang ke Studio</option>
-                <option value="home_service" {{ old('location_type') == 'home_service' ? 'selected' : '' }}>Home Service</option>
-            </select>
-            @error('location_type') <small style="color: red;">{{ $message }}</small> @enderror
-        </div>
-
-        <div style="margin-bottom: 15px;">
-            <label style="display:block; font-family: 'Jost'; font-weight: bold;">Alamat Lengkap (Jika Home Service):</label>
-            <textarea name="service_address" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">{{ old('service_address') }}</textarea>
-            @error('service_address') <small style="color: red;">{{ $message }}</small> @enderror
         </div>
 
         <div style="margin-bottom: 20px;">
-            <label style="display:block; font-family: 'Jost'; font-weight: bold;">Metode Pembayaran:</label>
-            <select name="metode_pembayaran" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid {{ $errors->has('metode_pembayaran') ? 'red' : '#ccc' }};">
-                <option value="cash" {{ old('metode_pembayaran') == 'cash' ? 'selected' : '' }}>Cash (Bayar di Tempat)</option>
-                <option value="transfer" {{ old('metode_pembayaran') == 'transfer' ? 'selected' : '' }}>Transfer Bank</option>
+            <label style="display:block; font-family: 'Jost'; font-weight: bold; margin-bottom: 8px;">Tipe Lokasi:</label>
+            <select name="location_type" required style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd;">
+                <option value="studio">🏢 Datang ke Studio</option>
+                <option value="home_service">🏠 Home Service</option>
             </select>
-            @error('metode_pembayaran') <small style="color: red;">{{ $message }}</small> @enderror
         </div>
 
-        <button type="submit" style="width: 100%; background: #E67E22; color: white; padding: 15px; border: none; border-radius: 10px; font-family: 'Erica One'; cursor: pointer;">
+        <div style="margin-bottom: 20px;">
+            <label style="display:block; font-family: 'Jost'; font-weight: bold; margin-bottom: 8px;">Alamat Lengkap (Jika Home Service):</label>
+            <textarea name="service_address" placeholder="Kosongkan jika datang ke studio..." style="width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #ddd; height: 100px; resize: none;">{{ old('service_address') }}</textarea>
+        </div>
+
+        <div style="margin-bottom: 30px;">
+            <label style="display:block; font-family: 'Jost'; font-weight: bold; margin-bottom: 8px;">Metode Pembayaran:</label>
+            <select name="metode_pembayaran" required style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd;">
+                <option value="cash">💵 Cash (Bayar di Tempat)</option>
+                <option value="transfer">📱 Transfer Bank</option>
+            </select>
+        </div>
+
+        <button type="submit" style="width: 100%; background: #FF9E1E; color: white; padding: 18px; border: none; border-radius: 15px; font-family: 'Erica One'; font-size: 20px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);">
             KONFIRMASI BOOKING
         </button>
     </form>

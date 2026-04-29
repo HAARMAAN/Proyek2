@@ -17,6 +17,7 @@ class Booking extends Model
         'layanan_id',
         'booking_date',
         'booking_time',
+        'booking_end_time',
         'location_type',
         'service_address',
         'metode_pembayaran',
@@ -27,11 +28,12 @@ class Booking extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id')->withDefault(['name' => 'Pelanggan']);
     }
 
     public function layanan(): BelongsTo
     {
-        return $this->belongsTo(Layanan::class, 'layanan_id');
+        return $this->belongsTo(Layanan::class, 'layanan_id')->withDefault(['layanan_name' => 'Layanan Tidak Ada']);
     }
+
 }

@@ -4,6 +4,7 @@
     use Illuminate\Support\Facades\Auth;
     use App\Http\Controllers\ProfileController;
     use App\Http\Controllers\Admin\LayananController;
+    use App\Http\Controllers\Admin\LaporanController;
     use App\Http\Controllers\Admin\BookingController as AdminBooking;
     use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
     use App\Http\Controllers\Pelanggan\PelangganDashboardController;
@@ -51,9 +52,10 @@ Route::get('/booking', function () {
         Route::resource('layanan', LayananController::class);
         Route::get('/booking', [AdminBooking::class, 'index'])->name('booking.index');
         Route::patch('/booking/{id}/status', [AdminBooking::class, 'updateStatus'])->name('booking.updateStatus');
+        Route::get('/booking/history', [AdminBooking::class, 'history'])->name('booking.history');
         
         Route::resource('pelanggan', \App\Http\Controllers\Admin\PelangganController::class);
-        Route::get('/laporan', [AdminDashboard::class, 'laporan'])->name('laporan.index');
+        Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
         Route::get('/pengaturan', [AdminDashboard::class, 'index'])->name('pengaturan.index');
     });
 
@@ -64,7 +66,8 @@ Route::get('/booking', function () {
         Route::get('/riwayat-booking', [PelangganDashboardController::class, 'riwayatBooking'])->name('riwayat');
         Route::get('/loyalitas', [PelangganDashboardController::class, 'loyalitas'])->name('loyalitas');
         
-        Route::get('/booking/create', [PelangganBooking::class, 'create'])->name('booking.create');
+        Route::get('/booking-list', [PelangganBooking::class, 'index'])->name('booking.index');
+        Route::get('/booking/create/{layanan_id?}', [PelangganBooking::class, 'create'])->name('booking.create');
         Route::post('/booking', [PelangganBooking::class, 'store'])->name('booking.store');
     });
 

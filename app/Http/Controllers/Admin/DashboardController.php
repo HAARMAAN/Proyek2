@@ -19,12 +19,11 @@ class DashboardController extends Controller
         $totalLayanan = Layanan::count();
         $bookingTerbaru = Booking::with(['user', 'layanan'])->latest()->take(5)->get();
 
-        // HITUNG DARI total_price (Harga Real yang dibayar)
-        $totalPendapatan = Booking::where('status_booking', 'completed')->sum('total_price');
+        // Variabel totalPendapatan sudah dihapus dari sini
 
         return view('admin.dashboard', compact(
             'totalPelanggan', 'bookingMenunggu', 'totalBookingSelesai', 
-            'totalLayanan', 'bookingTerbaru', 'totalPendapatan'
+            'totalLayanan', 'bookingTerbaru'
         ));
     }
 
@@ -38,8 +37,7 @@ class DashboardController extends Controller
             ->where('status_booking', 'completed')
             ->get();
 
-        // HITUNG DARI total_price agar laporan akurat
-        $totalPendapatan = $laporanBooking->sum('total_price');
+        // Hitung Pendapatan dihapus, hanya menyisakan jumlah treatment
         $totalTreatment = $laporanBooking->count();
 
         $layananTerlaris = Booking::select('layanan_id', DB::raw('count(*) as total'))
@@ -51,7 +49,7 @@ class DashboardController extends Controller
             ->get();
 
         return view('admin.laporan.index', compact(
-            'laporanBooking', 'totalPendapatan', 'totalTreatment', 
+            'laporanBooking', 'totalTreatment', 
             'layananTerlaris', 'start_date', 'end_date'
         ));
     }
