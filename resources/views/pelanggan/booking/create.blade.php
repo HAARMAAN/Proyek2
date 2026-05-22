@@ -7,18 +7,35 @@
     <form action="{{ route('customer.booking.store') }}" method="POST">
         @csrf
         
-        <div style="margin-bottom: 20px;">
-            <label style="display:block; font-family: 'Jost'; font-weight: bold; margin-bottom: 8px;">Pilih Layanan:</label>
-            <select name="layanan_id" required style="width: 100%; padding: 12px; border-radius: 10px;">
-                <option value="">-- Pilih Layanan --</option>
-                @foreach($layanans as $l)
-                    {{-- Gunakan old() untuk menangkap input sebelumnya, atau $layanan_id dari URL sebagai cadangan --}}
-                    <option value="{{ $l->id }}" {{ (old('layanan_id', $layanan_id) == $l->id) ? 'selected' : '' }}>
-                        {{ $l->layanan_name }} - Rp {{ number_format($l->price, 0, ',', '.') }}
-                    </option>
-                @endforeach
-            </select>
+        {{-- LAYANAN OTOMATIS --}}
+@php
+    $selectedLayanan = $layanans->firstWhere('id', $layanan_id);
+@endphp
+
+<input type="hidden" name="layanan_id" value="{{ $layanan_id }}">
+
+<div style="margin-bottom: 20px;">
+    <label style="display:block; font-family: 'Jost'; font-weight: bold; margin-bottom: 8px;">
+        Layanan Dipilih:
+    </label>
+
+    <div style="
+        width: 100%;
+        padding: 15px;
+        border-radius: 12px;
+        background: #fff7f0;
+        border: 1px solid #f2d3bd;
+        color: #5a3e2b;
+        font-weight: 600;
+        font-size: 16px;
+    ">
+        {{ $selectedLayanan->layanan_name ?? 'Layanan tidak ditemukan' }}
+
+        <div style="margin-top: 5px; color: #d96b34; font-size: 15px;">
+            Rp {{ number_format($selectedLayanan->price ?? 0, 0, ',', '.') }}
         </div>
+    </div>
+</div>
 
         <div style="display: flex; gap: 20px; margin-bottom: 20px;">
             <div style="flex: 1;">
@@ -34,7 +51,7 @@
         <div style="margin-bottom: 20px;">
             <label style="display:block; font-family: 'Jost'; font-weight: bold; margin-bottom: 8px;">Tipe Lokasi:</label>
             <select name="location_type" required style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd;">
-                <option value="studio">🏢 Datang ke Studio</option>
+                <option value="studio">🏢 Luna Home Beauty</option>
                 <option value="home_service">🏠 Home Service</option>
             </select>
         </div>

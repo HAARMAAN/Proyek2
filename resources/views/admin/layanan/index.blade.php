@@ -1,57 +1,162 @@
 <x-app-layout>
-    <div class="max-w-7xl mx-auto">
-        {{-- Header Section --}}
+
+    {{-- IMPORT FONT --}}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <div class="max-w-7xl mx-auto"
+         style="font-family: 'Poppins', sans-serif;">
+
+        {{-- HEADER --}}
         <div class="flex justify-between items-end mb-10">
+
             <div>
-                <h1 class="text-4xl font-serif text-[#4A3427] font-semibold">Manajemen Layanan</h1>
-                <p class="text-gray-500 mt-2 text-lg">Kelola daftar layanan kecantikan Anda</p>
+
+                <h1 class="text-4xl font-bold"
+                    style="font-family: 'Playfair Display', serif; color: #4E3629;">
+
+                    Manajemen Layanan
+
+                </h1>
+
+                <p class="mt-2 text-lg"
+                   style="color: #7A5C48;">
+
+                    Kelola daftar layanan kecantikan Anda
+
+                </p>
+
             </div>
-            <a href="{{ route('admin.layanan.create') }}" 
-               class="bg-[#D9773D] hover:bg-[#BF642F] text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95 text-sm uppercase"> + Tambah Layanan Baru</a>
+
+            <a href="{{ route('admin.layanan.create') }}"
+               class="text-white font-semibold py-3 px-8 rounded-full shadow-lg transition-all transform hover:scale-105 active:scale-95 text-sm"
+               style="background-color: #D96B34;">
+
+                + Tambah Layanan Baru
+
+            </a>
+
         </div>
 
-        {{-- Table Card --}}
-        <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 overflow-hidden">
+        {{-- TABLE CARD --}}
+        <div class="bg-white rounded-[2rem] border border-[#F3E3D7] p-8 overflow-hidden"
+             style="box-shadow: 0 10px 30px rgba(217,107,52,0.08);">
+
             <table class="w-full text-left border-collapse">
+
+                {{-- TABLE HEAD --}}
                 <thead>
-                    <tr class="border-b border-gray-100 text-gray-400 text-xs uppercase tracking-widest">
+
+                    <tr class="border-b border-[#F3E3D7] text-sm font-semibold"
+                        style="color: #4E3629;">
+
                         <th class="pb-6 px-4">Nama Layanan</th>
                         <th class="pb-6 px-4">Kategori</th>
                         <th class="pb-6 px-4">Harga</th>
                         <th class="pb-6 px-4">Durasi</th>
                         <th class="pb-6 px-4 text-right">Aksi</th>
+
                     </tr>
+
                 </thead>
-                <tbody class="divide-y divide-gray-50">
+
+                {{-- TABLE BODY --}}
+                <tbody class="divide-y divide-[#F8ECE3]"
+                       style="font-family: 'Poppins', sans-serif;">
+
                     @foreach($layanan as $item)
-                    <tr class="hover:bg-gray-50/50 transition-colors group">
+
+                    <tr class="hover:bg-[#FFF7F1] transition-colors group">
+
+                        {{-- NAMA --}}
                         <td class="py-6 px-4">
-                            <span class="text-gray-800 font-bold text-lg leading-tight">{{ $item->layanan_name }}</span>
-                        </td>
-                        <td class="py-6 px-4">
-                            <span class="px-4 py-1.5 bg-orange-50 text-[#D9773D] rounded-full text-[10px] font-bold uppercase tracking-wider">
-                                {{ $item->category }}
+
+                            <span class="font-semibold text-sm leading-tight"
+                                  style="color: #4E3629;">
+
+                                {{ $item->layanan_name }}
+
                             </span>
+
                         </td>
+
+                        {{-- KATEGORI --}}
                         <td class="py-6 px-4">
-                            <span class="font-bold text-[#D9773D] text-lg">Rp {{ number_format($item->price, 0, ',', '.') }}</span>
+
+                            <span class="px-4 py-2 rounded-full text-[11px] font-semibold"
+                                  style="background-color: #FFF1E8; color: #D96B34;">
+
+                                {{ $item->category }}
+
+                            </span>
+
                         </td>
-                        <td class="py-6 px-4 text-gray-400 font-medium">
+
+                        {{-- HARGA --}}
+                        <td class="py-6 px-4">
+
+                            <span class="font-semibold text-sm"
+                                  style="color: #D96B34;">
+
+                                Rp {{ number_format($item->price, 0, ',', '.') }}
+
+                            </span>
+
+                        </td>
+
+                        {{-- DURASI --}}
+                        <td class="py-6 px-4 text-sm font-medium"
+                            style="color: #7A5C48;">
+
                             {{ $item->duration_minutes }} Menit
+
                         </td>
+
+                        {{-- AKSI --}}
                         <td class="py-6 px-4 text-right">
-                            <div class="flex justify-end gap-6 font-bold text-sm">
-                                <a href="{{ route('admin.layanan.edit', $item->id) }}" class="text-[#D9773D] hover:underline underline-offset-4 decoration-2">Edit</a>
-                                <form action="{{ route('admin.layanan.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?')">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="text-red-300 hover:text-red-500 transition-colors">Hapus</button>
+
+                            <div class="flex justify-end gap-6 text-sm">
+
+                                {{-- EDIT --}}
+                                <a href="{{ route('admin.layanan.edit', $item->id) }}"
+                                   class="font-semibold hover:underline underline-offset-4 transition"
+                                   style="color: #D96B34;">
+
+                                    Edit
+
+                                </a>
+
+                                {{-- HAPUS --}}
+                                <form action="{{ route('admin.layanan.destroy', $item->id) }}"
+                                      method="POST"
+                                      onsubmit="return confirm('Yakin ingin menghapus?')">
+
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="submit"
+                                            class="font-semibold transition hover:underline"
+                                            style="color: #E10303;">
+
+                                        Hapus
+
+                                    </button>
+
                                 </form>
+
                             </div>
+
                         </td>
+
                     </tr>
+
                     @endforeach
+
                 </tbody>
+
             </table>
+
         </div>
+
     </div>
+
 </x-app-layout>

@@ -11,9 +11,9 @@
     use App\Http\Controllers\Pelanggan\BookingController as PelangganBooking;
 
     /* HALAMAN UTAMA */
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+use App\Http\Controllers\HomeController;
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 /* HALAMAN BEBAS (BISA DIBUKA TANPA LOGIN) */
 Route::get('/service', function () {
@@ -25,9 +25,9 @@ Route::get('/blog', function () {
 });
 
 /* BOOKING HARUS LOGIN */
-Route::get('/booking', function () {
-    return view('booking');
-})->middleware('auth');
+//Route::get('/booking', function () {
+//   return view('booking');
+//})->middleware('auth');
     
     Route::get('/customer/dashboard', function () {
     return view('profil_saya'); })->middleware(['auth'])->name('customer.dashboard');

@@ -12,18 +12,12 @@ use Midtrans\Snap;
 
 class BookingController extends Controller
 {
-    public function index()
-    {
-        $layanans = Layanan::all();
-        return view('pelanggan.booking.index', compact('layanans'));
-    }
+    public function create($layanan_id)
+{
+    $layanan = Layanan::findOrFail($layanan_id);
 
-   public function create($layanan_id = null)
-    {
-        $layanans = Layanan::all();
-        // Pastikan $layanan_id diikutkan ke dalam compact
-        return view('pelanggan.booking.create', compact('layanans', 'layanan_id'));
-    }
+    return view('pelanggan.booking.create', compact('layanan'));
+}
 
     public function store(Request $request)
     {

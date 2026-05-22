@@ -1,121 +1,176 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luna Beauty - @yield('title')</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500&family=Hanuman:wght@400;700&family=Jost:wght@400&family=Erica+One&family=Metal+Mania&display=swap" rel="stylesheet">
-    
-    <style>
-    body { margin: 0; background-color: #f8f8f8; font-family: 'Jost', sans-serif; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luna Beauty - @yield('title')</title>
 
-    /* NAVBAR UTAMA (Gaya ZAP/WhatsApp Referensi) */
-    .navbar-luna {
-        position: sticky; top: 0; width: 100%; height: 90px;
-        background-color: #F9CDA2; /* Oranye Muda sesuai gambar */
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 0 60px; box-sizing: border-box; z-index: 1000;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    /* Logo Kiri */
-    .brand-section { display: flex; align-items: center; gap: 15px; }
-    .brand-logo { height: 70px; width: auto; object-fit: contain; }
-    .brand-text { font-family: 'Hahmlet'; font-weight: 700; font-size: 18px; color: #333; }
-
-    /* Menu Kanan */
-    .nav-menu-wrapper { display: flex; align-items: center; gap: 35px; }
-
-    .nav-link-item {
-        text-decoration: none; color: #333; font-family: 'Jost';
-        font-size: 18px; font-weight: 500; display: flex; align-items: center;
-        gap: 8px; transition: 0.3s;
-    }
-
-    .nav-link-item:hover { color: #888; }
-    
-    /* Penanda Menu Aktif (Garis Bawah Tipis) */
-    .nav-link-item.active { border-bottom: 2px solid #333; padding-bottom: 4px; }
-
-    .profile-icon { font-size: 28px; color: #333; margin-left: 10px; }
-
-    .logout-button { background: none; border: none; cursor: pointer; font-size: 18px; display: flex; align-items: center; gap: 8px; }
-
-    /* Area Konten */
-    .content-container { padding: 40px 10%; min-height: 100vh; }
-</style>
-
-<body>
-    <header class="navbar-luna">
-        <div class="brand-section">
-            <img src="{{ asset('images/LHB.png') }}" alt="Luna Logo" class="brand-logo">
-            <div class="brand-text">LUNA HOME BEAUTY</div>
-        </div>
-
-       <nav class="nav-menu-wrapper">
-    <a href="{{ route('customer.booking.index') }}" class="nav-link-item {{ Request::is('customer.booking.index') ? 'active' : '' }}">
-        📋 Booking
-    </a>
-
-    <a href="{{ route('customer.riwayat') }}" class="nav-link-item {{ Request::is('customer/riwayat*') ? 'active' : '' }}">
-        📅 Riwayat Booking
-    </a>
-
-    <a href="{{ route('customer.loyalitas') }}" class="nav-link-item {{ Request::is('customer/loyalitas*') ? 'active' : '' }}">
-        ⭐ Loyalitas
-    </a>
-
-    <div class="profile-dropdown" style="position: relative; display: inline-block;">
-        <button onclick="toggleDropdown()" class="profile-trigger" style="background: none; border: none; cursor: pointer; font-size: 28px; padding: 0; margin-left: 10px;">
-            👤
-        </button>
-        
-        <div id="myDropdown" class="dropdown-content" style="display: none; position: absolute; right: 0; background-color: #ffffff; min-width: 160px; box-shadow: 0px 8px 16px rgba(0,0,0,0.2); border-radius: 12px; z-index: 1; overflow: hidden; margin-top: 10px; border: 1px solid #ddd;">
-            
-            <a href="{{ route('customer.dashboard') }}" style="color: black; padding: 12px 16px; text-decoration: none; display: block; font-family: 'Jost'; font-size: 16px; transition: 0.3s;">
-                👤 Profil Saya
-            </a>
-            
-            <hr style="margin: 0; border: 0; border-top: 1px solid #eee;">
-            
-            <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
-                @csrf
-                <button type="submit" style="width: 100%; text-align: left; background: none; border: none; padding: 12px 16px; cursor: pointer; font-family: 'Jost'; font-size: 16px; color: #d9534f; transition: 0.3s;">
-                    ↪️ Logout
-                </button>
-            </form>
-        </div>
-    </div>
-</nav>
-    </header>
-
-    <main class="content-container">
-        @yield('content')
-    </main>
-
-<script>
-    /* Fungsi buat munculin/nyembunyiin dropdown */
-    function toggleDropdown() {
-        document.getElementById("myDropdown").classList.toggle("show");
-    }
-
-    // Nutup dropdown kalau user ngeklik di luar area dropdown
-    window.onclick = function(event) {
-        if (!event.target.matches('.profile-trigger')) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            for (var i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-        }
-    }
-</script>
+<!-- FONT -->
+<link href="https://fonts.bunny.net/css?family=playfair-display:600,700|poppins:400,500,600" rel="stylesheet" />
 
 <style>
-    /* Class tambahan buat JS */
-    .show { display: block !important; }
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4efe9;
+    overflow-x: hidden;
+}
+
+/* NAVBAR (SAMA KAYAK HOME) */
+.navbar {
+    width: 100%;
+    background: #f8f2ec;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.nav-container {
+    max-width: 1280px;
+    margin: auto;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* LOGO */
+.logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-wrap img {
+    height: 40px;
+    object-fit: contain;
+}
+
+.logo-text {
+    font-weight: 600;
+    color: #5a3e2b;
+}
+
+/* MENU */
+.nav-menu {
+    display: flex;
+    gap: 24px;
+}
+
+.nav-link {
+    color: #6d5244;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: #d66a2f;
+}
+
+/* DROPDOWN */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+    display: block;
+    padding: 10px 14px;
+    text-decoration: none;
+    color: #333;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+    background: #f5f5f5;
+}
+
+.show {
+    display: block;
+}
+
+/* CONTENT */
+.content {
+    padding: 40px 10%;
+}
 </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="nav-container">
+
+        <!-- LOGO (FIX PASTI MUNCUL) -->
+        <div class="logo-wrap">
+            <img src="{{ asset('images/LHB.png') }}" alt="Logo">
+            <div class="logo-text">Luna Home Beauty</div>
+        </div>
+
+        <!-- MENU -->
+        <nav class="nav-menu">
+            <a href="{{ route('customer.riwayat') }}" class="nav-link">Riwayat</a>
+            <a href="{{ route('customer.loyalitas') }}" class="nav-link">Loyalitas</a>
+
+            <!-- PROFILE -->
+            <div class="dropdown">
+                <span onclick="toggleDropdown()" class="nav-link" style="cursor:pointer;">
+                    Profil ▾
+                </span>
+
+                <div id="dropdown" class="dropdown-menu">
+                    <a href="{{ route('customer.dashboard') }}">Profil Saya</a>
+
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+    </div>
+</header>
+
+<!-- CONTENT -->
+<main class="content">
+    @yield('content')
+</main>
+
+<script>
+function toggleDropdown() {
+    document.getElementById("dropdown").classList.toggle("show");
+}
+
+window.onclick = function(event) {
+    if (!event.target.matches('.nav-link')) {
+        let dropdown = document.getElementById("dropdown");
+        if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+        }
+    }
+}
+</script>
+
 </body>
 </html>

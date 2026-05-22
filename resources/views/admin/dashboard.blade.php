@@ -1,89 +1,296 @@
 <x-app-layout>
-    <div class="space-y-8">
-        {{-- Header Section --}}
-        <div>
-            <h1 class="text-3xl font-extrabold text-[#4A3121] tracking-tight">Dashboard Admin</h1>
-            <p class="text-gray-500 font-medium">Ringkasan statistik dan performa bisnis Luna Beauty</p>
-        </div>
 
-        {{-- GRID STATISTIK - Sekarang menjadi 3 Kolom agar Rapi --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <div class="bg-white p-7 rounded-[2.5rem] shadow-sm border border-gray-50 relative overflow-hidden transition hover:shadow-md">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="p-3 bg-blue-50 rounded-2xl text-blue-500 text-xl">👤</div>
-                    <span class="text-green-500 font-bold text-xs bg-green-50 px-2 py-1 rounded-lg">↗ 100%</span>
-                </div>
-                <p class="text-gray-400 text-xs uppercase tracking-widest font-bold">Total Pelanggan</p>
-                <h3 class="text-4xl font-black text-gray-800 mt-1">{{ $totalPelanggan }}</h3>
-            </div>
+<div style="
+    padding: 25px;
+    font-family: 'Poppins', sans-serif;
+    background: #f4efe9;
+    min-height: 100vh;
+;">
 
-            <div class="bg-white p-7 rounded-[2.5rem] shadow-sm border border-gray-50 relative overflow-hidden transition hover:shadow-md">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="p-3 bg-orange-50 rounded-2xl text-orange-500 text-xl">📅</div>
-                    <span class="text-green-500 font-bold text-xs bg-green-50 px-2 py-1 rounded-lg">↗</span>
-                </div>
-                <p class="text-gray-400 text-xs uppercase tracking-widest font-bold">Booking Menunggu</p>
-                <h3 class="text-4xl font-black text-gray-800 mt-1">{{ $bookingMenunggu }}</h3>
-            </div>
+    <!-- HEADER -->
+    <div style="margin-bottom: 28px;">
 
-            <div class="bg-white p-7 rounded-[2.5rem] shadow-sm border border-gray-50 relative overflow-hidden transition hover:shadow-md">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="p-3 bg-purple-50 rounded-2xl text-purple-500 text-xl">✨</div>
-                    <span class="text-green-500 font-bold text-xs bg-green-50 px-2 py-1 rounded-lg">↗</span>
-                </div>
-                <p class="text-gray-400 text-xs uppercase tracking-widest font-bold">Treatment Selesai</p>
-                <h3 class="text-4xl font-black text-gray-800 mt-1">{{ $totalBookingSelesai }}</h3>
-            </div>
+        <h1 style="
+            font-family: 'Playfair Display', serif;
+            font-size: 30px;
+            color: #4e3629;
+            font-weight: 700;
+        ">
+            Dashboard Admin
+        </h1>
 
-            {{-- Kartu Estimasi Pendapatan SUDAH DIHAPUS --}}
-        </div>
+        <p style="
+            color: #7a5c48;
+            font-size: 14px;
+            margin-top: 4px;
+        ">
+            Ringkasan statistik dan performa bisnis Luna Beauty
+        </p>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {{-- TABEL BOOKING TERBARU --}}
-            <div class="bg-white rounded-[2.5rem] shadow-sm p-8 border border-gray-50">
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-xl font-extrabold text-[#4A3121]">Booking Terbaru</h2>
-                    <a href="{{ route('admin.booking.index') }}" class="text-sm text-orange-600 font-bold hover:underline">Lihat Semua</a>
-                </div>
-                
-                <div class="space-y-4">
-                    @forelse($bookingTerbaru as $bt)
-                    <div class="flex items-center justify-between p-5 bg-[#FDFBF8] rounded-[1.8rem] border border-transparent hover:border-orange-100 transition">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-white shadow-sm rounded-full flex items-center justify-center text-[#D9773D] font-black text-lg border border-orange-50">
-                                {{ substr($bt->user->name ?? 'U', 0, 1) }}
-                            </div>
-                            <div>
-                                <p class="font-black text-gray-800">{{ $bt->user->name ?? 'User' }}</p>
-                                <p class="text-xs font-medium text-gray-500">{{ $bt->layanan->layanan_name ?? 'Layanan' }}</p>
-                            </div>
-                        </div>
-                        <span class="px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest 
-                            {{ $bt->status_booking == 'pending' ? 'bg-orange-100 text-orange-600' : 'bg-green-100 text-green-600' }}">
-                            {{ $bt->status_booking == 'pending' ? 'menunggu' : 'selesai' }}
-                        </span>
-                    </div>
-                    @empty
-                        <div class="text-center py-10">
-                            <p class="text-gray-400 italic">Belum ada booking hari ini.</p>
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-
-            {{-- INFORMASI LAYANAN --}}
-            <div class="bg-white rounded-[2.5rem] shadow-sm p-8 border border-gray-50">
-                <h2 class="text-xl font-extrabold text-[#4A3121] mb-8">Informasi Layanan</h2>
-                <div class="flex flex-col items-center justify-center py-10 text-center">
-                    <div class="w-24 h-24 bg-orange-50 rounded-full flex items-center justify-center text-4xl mb-4">✨</div>
-                    <p class="text-gray-800 font-bold text-lg">Total {{ $totalLayanan }} Layanan Aktif</p>
-                    <p class="text-gray-500 text-sm max-w-[200px] mt-2">Semua layanan sudah tersedia untuk dibooking pelanggan.</p>
-                    <a href="{{ route('admin.layanan.index') }}" class="mt-6 px-6 py-3 bg-[#4A3121] text-white rounded-2xl text-sm font-bold shadow-lg shadow-brown-100 transition hover:scale-105">
-                        Kelola Layanan
-                    </a>
-                </div>
-            </div>
-        </div>
     </div>
+
+
+    <!-- STATISTIK -->
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+        gap: 18px;
+        margin-bottom: 35px;
+    ">
+
+        <!-- Pelanggan -->
+        <div style="
+            background: white;
+            padding: 22px;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border: 1px solid #f1e3d8;
+        ">
+
+            <div style="font-size: 26px;">👤</div>
+
+            <p style="
+                font-size: 13px;
+                color: #9b7b67;
+                margin-top: 10px;
+            ">
+                Total Pelanggan
+            </p>
+
+            <h3 style="
+                font-size: 28px;
+                font-weight: bold;
+                color: #4e3629;
+                margin-top: 5px;
+            ">
+                {{ $totalPelanggan }}
+            </h3>
+
+        </div>
+
+        <!-- Booking -->
+        <div style="
+            background: white;
+            padding: 22px;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border: 1px solid #f1e3d8;
+        ">
+
+            <div style="font-size: 26px;">📅</div>
+
+            <p style="
+                font-size: 13px;
+                color: #9b7b67;
+                margin-top: 10px;
+            ">
+                Booking Menunggu
+            </p>
+
+            <h3 style="
+                font-size: 28px;
+                font-weight: bold;
+                color: #4e3629;
+                margin-top: 5px;
+            ">
+                {{ $bookingMenunggu }}
+            </h3>
+
+        </div>
+
+        <!-- Selesai -->
+        <div style="
+            background: white;
+            padding: 22px;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border: 1px solid #f1e3d8;
+        ">
+
+            <div style="font-size: 26px;">✨</div>
+
+            <p style="
+                font-size: 13px;
+                color: #9b7b67;
+                margin-top: 10px;
+            ">
+                Treatment Selesai
+            </p>
+
+            <h3 style="
+                font-size: 28px;
+                font-weight: bold;
+                color: #4e3629;
+                margin-top: 5px;
+            ">
+                {{ $totalBookingSelesai }}
+            </h3>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTENT -->
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(380px,1fr));
+        gap: 22px;
+    ">
+
+        <!-- BOOKING TERBARU -->
+        <div style="
+            background: white;
+            border-radius: 24px;
+            padding: 22px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border: 1px solid #f1e3d8;
+        ">
+
+            <div style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 18px;
+            ">
+
+                <h2 style="
+                    font-family: 'Playfair Display', serif;
+                    font-size: 19px;
+                    color: #4e3629;
+                    font-weight: 700;
+                ">
+                    Booking Terbaru
+                </h2>
+
+                <a href="{{ route('admin.booking.index') }}"
+                   style="
+                        color: #d66a2f;
+                        font-weight: 600;
+                        text-decoration: none;
+                   ">
+                    Lihat Semua
+                </a>
+
+            </div>
+
+            @forelse($bookingTerbaru as $bt)
+
+            <div style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 14px;
+                border-radius: 18px;
+                background: #fcf7f2;
+                margin-bottom: 10px;
+            ">
+
+                <div>
+
+                    <p style="
+                        font-weight: 600;
+                        color: #4e3629;
+                    ">
+                        {{ $bt->user->name ?? 'User' }}
+                    </p>
+
+                    <p style="
+                        font-size: 12px;
+                        color: #8a6a56;
+                        margin-top: 2px;
+                    ">
+                        {{ $bt->layanan->layanan_name ?? 'Layanan' }}
+                    </p>
+
+                </div>
+
+                <span style="
+                    padding: 5px 12px;
+                    border-radius: 14px;
+                    font-size: 11px;
+                    font-weight: 600;
+                    background: {{ $bt->status_booking == 'pending' ? '#ffe7d7' : '#dff3e3' }};
+                    color: {{ $bt->status_booking == 'pending' ? '#d66a2f' : '#2e7d32' }};
+                ">
+
+                    {{ $bt->status_booking == 'pending' ? 'Menunggu' : 'Selesai' }}
+
+                </span>
+
+            </div>
+
+            @empty
+
+            <p style="color: #999;">
+                Belum ada booking.
+            </p>
+
+            @endforelse
+
+        </div>
+
+
+        <!-- LAYANAN -->
+        <div style="
+            background: white;
+            border-radius: 24px;
+            padding: 22px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border: 1px solid #f1e3d8;
+            text-align: center;
+        ">
+
+            <h2 style="
+                font-family: 'Playfair Display', serif;
+                font-size: 19px;
+                color: #4e3629;
+                margin-bottom: 18px;
+                font-weight: 700;
+            ">
+                Informasi Layanan
+            </h2>
+
+            <div style="font-size: 38px;">✨</div>
+
+            <p style="
+                margin-top: 12px;
+                font-weight: bold;
+                color: #4e3629;
+                font-size: 16px;
+            ">
+                Total {{ $totalLayanan }} Layanan Aktif
+            </p>
+
+            <p style="
+                font-size: 13px;
+                color: #8a6a56;
+                margin-top: 6px;
+            ">
+                Semua layanan tersedia untuk dibooking pelanggan
+            </p>
+
+            <a href="{{ route('admin.layanan.index') }}"
+               style="
+                    display: inline-block;
+                    margin-top: 20px;
+                    padding: 10px 20px;
+                    border-radius: 14px;
+                    background: linear-gradient(90deg,#d66a2f,#f2a16b);
+                    color: white;
+                    text-decoration: none;
+                    font-weight: 600;
+                    box-shadow: 0 4px 12px rgba(214,106,47,0.25);
+               ">
+
+                Kelola Layanan
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
 </x-app-layout>

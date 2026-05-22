@@ -1,43 +1,69 @@
 @extends('layouts.customer')
 
+@section('title', 'Dashboard')
+
 @section('content')
-<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 80vh; gap: 30px; padding: 20px 0;">
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 80vh; gap: 35px; padding: 30px 0; background-color: #f7efe5; font-family: 'Jost', sans-serif;">
     
+    <!-- HEADER -->
     <div style="text-align: center;">
-        <div style="font-family: 'Erica One'; font-size: 36px; color: #333;">Selamat Datang, {{ $user->name }}</div>
-        <div style="font-family: 'Jost'; font-size: 20px; color: #666; mt-2;">Kelola profil dan riwayat treatment Anda</div>
-    </div>
-
-    <div style="width: 100%; max-width: 700px; background: #D9D9D9; border-radius: 25px; box-shadow: 10px 10px 20px rgba(0,0,0,0.1); overflow: hidden; padding-bottom: 30px;">
-        <div style="padding: 25px; font-family: 'Erica One'; font-size: 28px; text-align: center; border-bottom: 2px solid rgba(0,0,0,0.05); margin-bottom: 20px;">
-            INFORMASI PRIBADI
+        <div style="font-family: 'Hahmlet'; font-size: 38px; color: #5a3e2b; font-weight: 700;">
+            Selamat Datang, {{ $user->name }}
         </div>
-        
-        <div style="padding: 0 60px; font-family: 'Hanuman'; font-size: 18px; line-height: 1.6;">
-            <p style="margin-bottom: 15px;"><strong>Nama Lengkap:</strong><br>{{ $user->name }}</p>
-            <p style="margin-bottom: 15px;"><strong>Email:</strong><br>{{ $user->email }}</p>
-            <p style="margin-bottom: 0;"><strong>WhatsApp:</strong><br>{{ $user->whatsapp_number ?? '-' }}</p>
+        <div style="font-size: 18px; color: #7a5c48; margin-top: 6px;">
+            Kelola profil dan riwayat treatment Anda dengan mudah
         </div>
     </div>
 
-    <div style="width: 100%; max-width: 700px; background: #D9D9D9; border-radius: 25px; box-shadow: 10px 10px 20px rgba(0,0,0,0.1); padding-bottom: 30px;">
-        <div style="padding: 25px; font-family: 'Erica One'; font-size: 28px; text-align: center; border-bottom: 2px solid rgba(0,0,0,0.05); margin-bottom: 20px;">
-            STATISTIK ANDA
+    <!-- INFORMASI PRIBADI -->
+    <div style="width: 100%; max-width: 700px; background: #ffffff; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); overflow: hidden;">
+        
+        <div style="padding: 20px; font-family: 'Hahmlet'; font-size: 22px; text-align: center; background: linear-gradient(90deg, #d96b34, #f2a16b); color: white;">
+            Informasi Pribadi
         </div>
         
-        <div style="display: flex; justify-content: space-around; text-align: center; font-family: 'Hanuman'; padding: 10px 20px;">
+        <div style="padding: 30px 60px; font-size: 16px; color: #5a3e2b; line-height: 1.8;">
+            <p style="margin-bottom: 18px;">
+                <span style="font-weight: 600; color: #7a5c48;">Nama Lengkap</span><br>
+                {{ $user->name }}
+            </p>
+
+            <p style="margin-bottom: 18px;">
+                <span style="font-weight: 600; color: #7a5c48;">Email</span><br>
+                {{ $user->email }}
+            </p>
+
+            <p>
+                <span style="font-weight: 600; color: #7a5c48;">Nomor WhatsApp</span><br>
+                {{ $user->whatsapp_number ?? '-' }}
+            </p>
+        </div>
+    </div>
+
+    <!-- STATISTIK -->
+    <div style="width: 100%; max-width: 700px; background: #ffffff; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); overflow: hidden;">
+        
+        <div style="padding: 20px; font-family: 'Hahmlet'; font-size: 22px; text-align: center; background: linear-gradient(90deg, #d96b34, #f2a16b); color: white;">
+            Statistik Anda
+        </div>
+        
+        <div style="display: flex; justify-content: space-around; text-align: center; padding: 25px 20px; color: #5a3e2b;">
+            
             <div>
-                <div style="font-size: 24px; font-weight: bold;">{{ $myBookings->count() }}</div>
-                <div style="font-size: 14px; color: #555;">Total Booking</div>
+                <div style="font-size: 28px; font-weight: bold;">{{ $myBookings->count() }}</div>
+                <div style="font-size: 14px; color: #7a5c48; margin-top: 5px;">Total Booking</div>
             </div>
+
             <div>
-                <div style="font-size: 24px; font-weight: bold;">{{ $user->bintang_loyalitas ?? 0 }} ⭐</div>
-                <div style="font-size: 14px; color: #555;">Bintang Loyalitas</div>
+                <div style="font-size: 28px; font-weight: bold;">{{ $user->bintang_loyalitas ?? 0 }} ⭐</div>
+                <div style="font-size: 14px; color: #7a5c48; margin-top: 5px;">Bintang Loyalitas</div>
             </div>
+
             <div>
-                <div style="font-size: 24px; font-weight: bold;">{{ $user->total_kunjungan ?? 0 }}</div>
-                <div style="font-size: 14px; color: #555;">Total Kunjungan</div>
+                <div style="font-size: 28px; font-weight: bold;">{{ $user->total_kunjungan ?? 0 }}</div>
+                <div style="font-size: 14px; color: #7a5c48; margin-top: 5px;">Total Kunjungan</div>
             </div>
+
         </div>
     </div>
 

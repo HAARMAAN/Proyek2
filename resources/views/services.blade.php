@@ -47,23 +47,23 @@
 
         @php
         $services = [
-            ["LUNA SIGNATURE SERUM FACIAL + SINAR PDT","130K","Facial premium + PDT untuk mencerahkan & merawat kulit"],
-            ["BRIGHTENING FACIAL","110K","Mencerahkan kulit kusam & tidak merata"],
-            ["ACNE CARE FACIAL","110K","Mengontrol minyak & merawat jerawat"],
-            ["CALMING FACIAL","110K","Menenangkan kulit sensitif & iritasi"],
-            ["HYDRATING FACIAL","110K","Melembabkan kulit kering"],
-            ["OIL CONTROL FACIAL","110K","Mengontrol minyak berlebih"],
-            ["DETOX FACIAL","110K","Membersihkan racun & kotoran"],
-            ["MICRODERMABRASI PORE REFINING","150K","Mengecilkan pori-pori"],
-            ["MICRODERMABRASI SALMON DNA","250K","Regenerasi kulit & glowing"],
-            ["LASH LIFT & TINT","90K","Bulu mata lentik & tebal"],
-            ["DERMAPEN ACNE SCARS","310K","Menghilangkan bekas jerawat"],
-            ["DERMAPEN SALMON DNA","250K","Peremajaan kulit"],
-            ["PACKAGE FACIAL + LASH LIFT","200K","Facial + lash lift"],
-            ["PACKAGE FACIAL + DERMAPEN ACNE","410K","Perbaikan tekstur kulit"],
-            ["PACKAGE FACIAL + DNA SALMON","360K","Regenerasi & anti aging"],
-            ["BIOPEEL TREATMENT","550K","Mengurangi noda & jerawat"],
-            ["FACIAL + BIOPEEL","650K","Facial + biopeel lengkap"],
+             ["LUNA SIGNATURE SERUM FACIAL + SINAR PDT","130K","Perawatan facial premium dengan kombinasi serum terbaik dan terapi sinar PDT untuk membantu mencerahkan, melembabkan, mengurangi jerawat, dan merawat kulit secara menyeluruh","facial1.jpg"],
+            ["BRIGHTENING FACIAL","110K","Facial dengan serum pencerah yang membantu menyamarkan kulit kusam, warna kulit tidak merata & membuat wajah tampak lebih cerah & sehat","facial2.jpg"],
+            ["ACNE CARE FACIAL","110K","Facial khusus dengan serum acne untuk membantu mengontrol minyak berlebih, menenangkan jerawat aktif, & membantu merawat kulit berjerawat agar tampak lebih bersih","facial3.jpg"],
+            ["CALMING FACIAL","110K","Perawatan facial dengan serum calming yang membantu menenangkan kulit sensitif, kemerahan, dan iritasi sehingga kulit terasa lebih nyaman dan rileks","facial4.jpg"],
+            ["HYDRATING FACIAL","110K","Perawatan facial dengan serum hyaluron untuk membantu melembabkan kulit secara maksimal, mengurangi rasa kering, dan membantu kulit terasa kenyal serta fresh","facial5.jpg"],
+            ["OIL CONTROL FACIAL","110K","Perawatan facial khusus kulit berminyak untuk mengurangi minyak berlebih, membantu mencegah jerawat, dan membuat kulit tampak lebih bersih dan segar","facial6.jpg"],
+            ["DETOX FACIAL","110K","Perawatan facial untuk membersihkan pori-pori dari kotoran dan racun, membantu mengangkat sel kulit mati, serta membuat kulit terasa lebih bersih, segar, dan sehat","facial7.jpg"],
+            ["FACIAL MICRODERMABRASI PORE REFINING","150K","Perawatan facial microdermabrasi dengan serum pengecil pori-pori untuk membersihkan pori secara mendalam, membantu mengurangi tampilan pori besar, serta membuat kulit terasa lebih halus, bersih, dan segar","facial8.jpg"],
+            ["FACIAL MICRODERMABRASI SALMON DNA","250K","Perawatan microdermabrasi dengan serum DNA salmon untuk membantu regenerasi kulit, mengecilkan pori-pori, menyamarkan garis halus, serta membuat wajah tampak lebih cerah, halus, dan glowing","facial9.jpg"],
+            ["LASH LIFT & TINT","90K","Perawatan bulu mata untuk melentikkan dan memberi warna pada bulu mata alami, sehingga terlihat lebih panjang, tebal, rapi, dan ekspresif tanpa perlu maskara","facial10.jpg"],
+            ["DERMAPEN ACNE SCARS","310K","Perawatan dermapen untuk membantu memperbaiki tekstur kulit, menyamarkan bekas jerawat, dan merangsang regenerasi kulit agar wajah tampak lebih halus dan merata","facial11.jpg"],
+            ["DERMAPEN SALMON DNA","250K","Perawatan dermapen dengan serum salmon DNA untuk membantu regenerasi kulit, memperbaiki tekstur, menyamarkan tanda penuaan, dan membuat kulit tampak lebih sehat, halus, dan glowing","facial12.jpg"],
+            ["LUNA PACKAGE FACIAL SERUM + LASH LIFT","200K","Perawatan wajah dengan serum pilihan sesuai kebutuhan kulit untuk membantu membersihkan, menutrisi, dan membuat kulit tampak lebih cerah serta segar. Dipadukan dengan Lash Lift untuk melentikkan dan menegaskan bulu mata secara natural, sehingga wajah terlihat lebih fresh tanpa makeup","facial10.jpg"],
+            ["LUNA PACKAGE FACIAL + DERMAPEN ACNE SCARS","410K","Perawatan facial yang dipadukan dengan dermapen untuk membantu memperbaiki tekstur kulit, menyamarkan bekas jerawat, dan merangsang regenerasi kulit agar wajah tampak lebih halus dan merata","facial3.jpg"],
+            ["LUNA PACKAGE FACIAL + DERMAPEN DNA SALMON","360K","Perawatan facial yang dipadukan dengan dermapen dengan serum salmon DNA untuk membantu regenerasi kulit, memperbaiki tekstur, menyamarkan tanda penuaan, dan membuat kulit tampak lebih sehat, halus, dan glowing","facial8.jpg"],
+            ["BIOPEEL TREATMENT","550K","Biopeel bekerja dengan teknologi dua fase untuk memperbaiki tekstur kulit, scars, membantu mengurangi jerawat dan noda hitam, serta membuat kulit tampak lebih cerah dan halus tanpa pengelupasan berlebihan","facial13.jpg"],
+            ["FACIAL + BIOPEEL TREATMENT","650K","Perawatan facial yang dipadukan dengan treatment biopeel yang bekerja dengan teknologi dua fase untuk memperbaiki tekstur kulit, membantu mengurangi jerawat dan noda hitam, serta membuat kulit tampak lebih cerah dan halus tanpa pengelupasan berlebihan","facial13.jpg"],
         ];
         @endphp
 
@@ -103,20 +103,20 @@
 
     @php
     $homeServices = [
-        ["SIGNATURE FACIAL + PDT","130K"],
-        ["BRIGHTENING FACIAL","120K"],
-        ["ACNE CARE FACIAL","120K"],
-        ["CALMING FACIAL","120K"],
-        ["HYDRATING FACIAL","120K"],
-        ["OIL CONTROL FACIAL","120K"],
-        ["DETOX FACIAL","120K"],
-        ["MICRODERMABRASI PORE","150K"],
-        ["MICRODERMABRASI DNA","250K"],
-        ["PACKAGE FACIAL + LASH","200K"],
-        ["PACKAGE + DERMAPEN ACNE","420K"],
-        ["PACKAGE + DNA SALMON","370K"],
-        ["BIOPEEL","550K"],
-        ["FACIAL + BIOPEEL","650K"],
+        ["LUNA SIGNATURE SERUM FACIAL + SINAR PDT","130K","Perawatan facial premium dengan kombinasi serum terbaik dan terapi sinar PDT untuk membantu mencerahkan, melembabkan, mengurangi jerawat dan merawat kulit secara menyeluruh","facial1.jpg"],
+        ["BRIGHTENING FACIAL","120K","Facial dengan serum pencerah yang membantu menyamarkan kulit kusam, warna kulit tidak merata dan membuat wajah tampak lebih cerah dan sehat","facial2.jpg"],
+        ["ACNE CARE FACIAL","120K","Facial khusus dengan serum acne untuk membantu mengontrol minyak berlebih, menenangkan jerawat aktif, & membantu merawat kulit berjerawat agar tampak lebih bersih","facial3.jpg"],
+        ["CALMING FACIAL","120K","Perawatan facial dengan serum calming yang membantu menenangkan kulit sensitif, kemerahan, dan iritasi sehingga kulit terasa lebih nyaman dan rileks","facial4.jpg"],
+        ["HYDRATING FACIAL","120K","Perawatan facial dengan serum hyaluron untuk membantu melembabkan kulit secara maksimal, mengurangi rasa kering, dan membantu kulit terasa kenyal serta fresh","facial5.jpg"],
+        ["OIL CONTROL FACIAL","120K","Perawatan facial khusus kulit berminyak untuk mengurangi minyak berlebih, membantu mencegah jerawat, dan membuat kulit tampak lebih bersih dan segar","facial6.jpg"],
+        ["DETOX FACIAL","120K","Perawatan facial untuk membersihkan pori-pori dari kotoran dan racun, membantu mengangkat sel kulit mati, serta membuat kulit terasa lebih bersih, segar, dan sehat","facial7.jpg"],
+        ["FACIAL MICRODERMABRASI PORE REFINING","150K","Perawatan facial microdermabrasi dengan serum pengecil pori-pori untuk membersihkan pori secara mendalam, membantu mengurangi tampilan pori besar, serta membuat kulit terasa lebih halus, bersih, dan segar","facial8.jpg"],
+        ["FACIAL MICRODERMABRASI SALMON DNA","250K","Perawatan microdermabrasi dengan serum DNA salmon untuk membantu regenerasi kulit, mengecilkan pori-pori, menyamarkan garis halus, serta membuat wajah tampak lebih cerah, halus, dan glowing","facial9.jpg"],
+        ["LUNA PACKAGE FACIAL SERUM + LASH LIFT","200K","Perawatan wajah dengan serum pilihan sesuai kebutuhan kulit untuk membantu membersihkan, menutrisi, dan membuat kulit tampak lebih cerah serta segar. Dipadukan dengan Lash Lift untuk melentikkan dan menegaskan bulu mata secara natural, sehingga wajah terlihat lebih fresh tanpa makeup","facial10.jpg"],
+        ["LUNA PACKAGE FACIAL + DERMAPEN ACNE SCARS","420K","Perawatan facial yang dipadukan dengan dermapen untuk membantu memperbaiki tekstur kulit, menyamarkan bekas jerawat, dan merangsang regenerasi kulit agar wajah tampak lebih halus dan merata","facial3.jpg"],
+        ["LUNA PACKAGE FACIAL + DERMAPEN DNA SALMON","370K","Perawatan facial yang dipadukan dengan dermapen dengan serum salmon DNA untuk membantu regenerasi kulit, memperbaiki tekstur, menyamarkan tanda penuaan, dan membuat kulit tampak lebih sehat, halus, dan glowing","facial8.jpg"],
+        ["BIOPEEL TREATMENT","550K","Biopeel bekerja dengan teknologi dua fase untuk memperbaiki tekstur kulit, scars, membantu mengurangi jerawat dan noda hitam, serta membuat kulit tampak lebih cerah dan halus tanpa pengelupasan berlebihan","facial13.jpg"],
+        ["FACIAL + BIOPEEL TREATMENT","650K","Perawatan facial yang dipadukan dengan treatment biopeel yang bekerja dengan teknologi dua fase untuk memperbaiki tekstur kulit, membantu mengurangi jerawat dan noda hitam, serta membuat kulit tampak lebih cerah dan halus tanpa pengelupasan berlebihan","facial13.jpg"],
     ];
     @endphp
 
@@ -135,7 +135,7 @@
                 </span>
 
                 <button class="bg-[#d96b34] text-white px-4 py-1 rounded-full text-sm">
-                    Pilih
+                    Detail
                 </button>
             </div>
 
