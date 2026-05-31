@@ -7,35 +7,19 @@
     <form action="{{ route('customer.booking.store') }}" method="POST">
         @csrf
         
-        {{-- LAYANAN OTOMATIS --}}
-@php
-    $selectedLayanan = $layanans->firstWhere('id', $layanan_id);
-@endphp
+        <input type="hidden" name="layanan_id" value="{{ $layanan->id }}">
 
-<input type="hidden" name="layanan_id" value="{{ $layanan_id }}">
-
-<div style="margin-bottom: 20px;">
-    <label style="display:block; font-family: 'Jost'; font-weight: bold; margin-bottom: 8px;">
-        Layanan Dipilih:
-    </label>
-
-    <div style="
-        width: 100%;
-        padding: 15px;
-        border-radius: 12px;
-        background: #fff7f0;
-        border: 1px solid #f2d3bd;
-        color: #5a3e2b;
-        font-weight: 600;
-        font-size: 16px;
-    ">
-        {{ $selectedLayanan->layanan_name ?? 'Layanan tidak ditemukan' }}
-
-        <div style="margin-top: 5px; color: #d96b34; font-size: 15px;">
-            Rp {{ number_format($selectedLayanan->price ?? 0, 0, ',', '.') }}
+        <div style="margin-bottom: 20px;">
+            <label style="display:block; font-family: 'Jost'; font-weight: bold; margin-bottom: 8px;">
+                Layanan Dipilih:
+            </label>
+            <div style="width: 100%; padding: 15px; border-radius: 12px; background: #fff7f0; border: 1px solid #f2d3bd; color: #5a3e2b; font-weight: 600; font-size: 16px;">
+                {{ $layanan->layanan_name }}
+                <div style="margin-top: 5px; color: #d96b34; font-size: 15px;">
+                    Rp {{ number_format($layanan->price, 0, ',', '.') }}
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
         <div style="display: flex; gap: 20px; margin-bottom: 20px;">
             <div style="flex: 1;">

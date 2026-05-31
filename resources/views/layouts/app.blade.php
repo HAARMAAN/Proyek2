@@ -75,17 +75,9 @@
                     {{-- ICON --}}
                     <div class="relative flex-shrink-0">
 
-                        <div class="w-10 h-10 rounded-full border border-white/80 flex items-center justify-center backdrop-blur-sm">
-
-                            <span class="font-heading text-white text-[28px] leading-none">
-                                L
-                            </span>
-
-                        </div>
-
-                        {{-- AKSEN --}}
-                        <div class="absolute -bottom-1 -right-1 text-[10px] text-white/90">
-                            ✦
+                        <div class="w-10 h-10 rounded-full overflow-hidden border border-white/80" style="background-color: #FDF6F0;">
+                            <img src="{{ asset('images/LHB.png') }}" alt="Luna Home Beauty Logo"
+                                 class="w-full h-full object-cover">
                         </div>
 
                     </div>

@@ -13,11 +13,13 @@ use Midtrans\Snap;
 class BookingController extends Controller
 {
     public function create($layanan_id)
-{
-    $layanan = Layanan::findOrFail($layanan_id);
+    {
+        // Ambil hanya layanan yang dipilih berdasarkan ID
+        $layanan = Layanan::findOrFail($layanan_id);
 
-    return view('pelanggan.booking.create', compact('layanan'));
-}
+        // Langsung kirim $layanan ke view, tidak perlu kirim semua layanan
+        return view('pelanggan.booking.create', compact('layanan'));
+    }
 
     public function store(Request $request)
     {
