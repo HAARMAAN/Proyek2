@@ -13,6 +13,16 @@
         <div style="font-size: 18px; color: #7a5c48; margin-top: 6px;">
             Kelola profil dan riwayat treatment Anda dengan mudah
         </div>
+        @auth
+        <div style="margin-top: 22px;">
+            <a href="{{ route('home') }}" 
+               style="display: inline-block; background: linear-gradient(90deg, #d96b34, #f2a16b); color: white; padding: 12px 30px; border-radius: 30px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 15px rgba(217, 107, 52, 0.2); transition: 0.3s; font-family: 'Poppins', sans-serif;"
+               onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(217, 107, 52, 0.35)';"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(217, 107, 52, 0.2)';">
+                Kembali ke Layanan
+            </a>
+        </div>
+        @endauth
     </div>
 
     <!-- INFORMASI PRIBADI -->

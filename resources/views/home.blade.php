@@ -34,13 +34,21 @@ body {
 .btn-main:hover {
     background-color: #bf5b25;
 }
+
+/* Efek Semi-Transparan (Glassmorphism) */
+#navbar { 
+    transition: background-color 0.3s, backdrop-filter 0.3s; 
+    background-color: rgba(244, 239, 233, 0.8) !important; /* Warna cream dengan transparansi 10% */
+    backdrop-filter: blur(10px); /* Efek buram agar terlihat elegan */
+    -webkit-backdrop-filter: blur(10px); /* Dukungan untuk Safari */
+}
 </style>
 </head>
 
 <body class="min-h-screen flex flex-col">
 
 <!-- NAVBAR -->
-<header class="w-full bg-[#f8f2ec] shadow-sm sticky top-0 z-50">
+<header id="navbar" class="w-full bg-[#f4efe9] backdrop-blur-md shadow-sm sticky top-0 z-50 transition-all duration-300">
 <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
 <div class="flex items-center gap-2">
@@ -60,7 +68,9 @@ body {
 <a href="#booking" class="nav-link">Booking</a>
 @endguest
 
+@guest
 <a href="#blog" class="nav-link">Blog</a>
+@endguest
 
 @auth
 <a href="{{ route('customer.dashboard') }}" class="nav-link font-semibold">Profil</a>
@@ -164,9 +174,9 @@ class="rounded-2xl shadow-md w-full max-w-md mx-auto">
 
         @foreach($studioServices as $index => $s)
 
-        <div class="bg-white rounded-[24px] p-3 self-start
+        <div class="group bg-white rounded-[24px] p-3 self-start
                     border border-[#F3E3D7]
-                    transition duration-300 hover:-translate-y-1"
+                    transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
              style="box-shadow: 0 8px 20px rgba(217,107,52,0.08);">
 
             <div class="flex gap-4">
@@ -186,12 +196,13 @@ class="rounded-2xl shadow-md w-full max-w-md mx-auto">
                             {{ $s->layanan_name }}
                         </h4>
 
-                        @auth
-                        <p class="text-sm text-[#7A5C48] mt-2 leading-relaxed"
-                           style="font-family: 'Poppins', sans-serif;">
-                            {{ \Illuminate\Support\Str::limit($s->description, 80) }}
-                        </p>
-                        @endauth
+                        <!-- Description on hover or short default -->
+                        <div class="transition-all duration-500 ease-in-out max-h-12 group-hover:max-h-80 overflow-hidden">
+                            <p class="text-xs text-[#7A5C48] mt-2 leading-relaxed"
+                               style="font-family: 'Poppins', sans-serif;">
+                                {{ $s->description }}
+                            </p>
+                        </div>
                     </div>
 
                     <div class="flex items-center justify-between mt-4">
@@ -201,12 +212,12 @@ class="rounded-2xl shadow-md w-full max-w-md mx-auto">
                         </span>
 
                         @auth
-                        <a href="{{ route('customer.booking.create', $s->id) }}"
-                           class="px-5 py-2 rounded-xl text-white text-sm font-medium
-                                  hover:scale-105 transition"
-                           style="background: linear-gradient(90deg, #E38145, #F2A16B);">
+                        <button onclick="openBookingModal('{{ $s->id }}', '{{ addslashes($s->layanan_name) }}', '{{ $s->price }}', 'studio')"
+                                class="px-5 py-2 rounded-xl text-white text-sm font-medium
+                                       hover:scale-105 transition"
+                                style="background: linear-gradient(90deg, #E38145, #F2A16B);">
                             Booking
-                        </a>
+                        </button>
                         @else
                         <button onclick="toggleDetail('detail-{{ $index }}')"
                                 class="px-5 py-2 rounded-xl text-white text-sm font-medium
@@ -266,11 +277,11 @@ class="rounded-2xl shadow-md w-full max-w-md mx-auto">
     ];
     @endphp
 
-        @foreach($studioServices as $index => $s)
+        @foreach($homeServices as $index => $s)
 
-        <div class="bg-white rounded-[24px] p-3 self-start
+        <div class="group bg-white rounded-[24px] p-3 self-start
                     border border-[#F3E3D7]
-                    transition duration-300 hover:-translate-y-1"
+                    transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
              style="box-shadow: 0 8px 20px rgba(217,107,52,0.08);">
 
             <div class="flex gap-4">
@@ -290,12 +301,13 @@ class="rounded-2xl shadow-md w-full max-w-md mx-auto">
                             {{ $s->layanan_name }}
                         </h4>
 
-                        @auth
-                        <p class="text-sm text-[#7A5C48] mt-2 leading-relaxed"
-                           style="font-family: 'Poppins', sans-serif;">
-                           {{ \Illuminate\Support\Str::limit($s->description, 80) }}
-                        </p>
-                        @endauth
+                        <!-- Description on hover or short default -->
+                        <div class="transition-all duration-500 ease-in-out max-h-12 group-hover:max-h-80 overflow-hidden">
+                            <p class="text-xs text-[#7A5C48] mt-2 leading-relaxed"
+                               style="font-family: 'Poppins', sans-serif;">
+                                {{ $s->description }}
+                            </p>
+                        </div>
                     </div>
 
                     <div class="flex items-center justify-between mt-4">
@@ -305,12 +317,12 @@ class="rounded-2xl shadow-md w-full max-w-md mx-auto">
                         </span>
 
                         @auth
-                        <a href="{{ route('customer.booking.create', $s->id) }}"
-                           class="px-5 py-2 rounded-xl text-white text-sm font-medium
-                                  hover:scale-105 transition"
-                           style="background: linear-gradient(90deg, #E38145, #F2A16B);">
+                        <button onclick="openBookingModal('{{ $s->id }}', '{{ addslashes($s->layanan_name) }}', '{{ $s->price }}', 'home')"
+                                class="px-5 py-2 rounded-xl text-white text-sm font-medium
+                                       hover:scale-105 transition"
+                                style="background: linear-gradient(90deg, #E38145, #F2A16B);">
                             Booking
-                        </a>
+                        </button>
                         @else
                         <button onclick="toggleDetail('home-detail-{{ $index }}')"
                                 class="px-5 py-2 rounded-xl text-white text-sm font-medium
@@ -436,6 +448,7 @@ class="rounded-2xl shadow-md w-full max-w-md mx-auto">
 </section>
 @endguest
 
+@guest
 <!-- BLOG -->
 <section id="blog" class="py-20 bg-[#f8f2ec]">
 <div class="max-w-7xl mx-auto px-6">
@@ -480,11 +493,101 @@ Facial membantu membersihkan pori-pori dan membuat kulit lebih cerah.
 
 </div>
 </section>
+@endguest
 
-<footer class="text-center text-sm text-[#7a5c48] py-6">
-© 2026 Luna Home Beauty
-</footer>
+@include('components.footer')
 
+@auth
+<!-- MIDTRANS SNAP JS SDK -->
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+
+<!-- BOOKING MODAL (POP-UP) -->
+<div id="bookingModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+    <!-- Modal Box -->
+    <div class="relative w-full max-w-lg bg-[#fdf8f4] rounded-[30px] border border-[#F3E3D7] p-8 shadow-2xl transform scale-95 transition-all duration-300">
+        <!-- Close Button -->
+        <button onclick="closeBookingModal()" class="absolute top-5 right-5 text-[#7A5C48] hover:text-[#d66a2f] hover:rotate-90 transition-all duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <!-- Header -->
+        <div class="text-center mb-6">
+            <h3 class="text-2xl font-bold text-[#5A3E2B]" style="font-family: 'Playfair Display', serif;">
+                Booking Treatment
+            </h3>
+            <p class="text-xs text-[#7A5C48] mt-1">Konfirmasi jadwal treatment terbaik untuk Anda</p>
+        </div>
+
+        <!-- Form -->
+        <form id="bookingForm" onsubmit="submitBooking(event)" class="space-y-4">
+            @csrf
+            
+            <input type="hidden" name="layanan_id" id="modalLayananId">
+
+            <!-- Selected Service Details -->
+            <div class="bg-white p-4 rounded-2xl border border-[#F3E3D7] shadow-sm">
+                <label class="block text-[11px] font-semibold text-[#7A5C48] uppercase tracking-wider mb-1">Layanan Dipilih</label>
+                <div class="font-bold text-[#5A3E2B] text-base" id="modalLayananName" style="font-family: 'Playfair Display', serif;">-</div>
+                <div class="text-[#d96b34] font-bold mt-1 text-lg" id="modalLayananPrice">-</div>
+            </div>
+
+            <!-- Date and Time -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-[#6B4226] mb-2">Tanggal Booking</label>
+                    <input type="date" name="booking_date" id="modalBookingDate" required 
+                           class="w-full rounded-xl border border-[#E7D5C7] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#E8A87C] bg-white text-[#5A3E2B]">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-[#6B4226] mb-2">Jam Booking</label>
+                    <input type="time" name="booking_time" id="modalBookingTime" required 
+                           class="w-full rounded-xl border border-[#E7D5C7] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#E8A87C] bg-white text-[#5A3E2B]">
+                </div>
+            </div>
+
+            <!-- Location Type -->
+            <div>
+                <label class="block text-xs font-semibold text-[#6B4226] mb-2">Tipe Lokasi</label>
+                <select name="location_type" id="modalLocationType" required onchange="toggleAddressField()"
+                        class="w-full rounded-xl border border-[#E7D5C7] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#E8A87C] bg-white text-[#5A3E2B]">
+                    <option value="studio">🏢 Luna Home Beauty (Datang ke Studio)</option>
+                    <option value="home_service">🏠 Home Service (Panggil ke Rumah)</option>
+                </select>
+            </div>
+
+            <!-- Address Field (Conditional) -->
+            <div id="addressContainer" class="hidden transition-all duration-300">
+                <label class="block text-xs font-semibold text-[#6B4226] mb-2">Alamat Lengkap</label>
+                <textarea name="service_address" id="modalServiceAddress" placeholder="Masukkan alamat lengkap pengiriman home service..." 
+                          class="w-full rounded-xl border border-[#E7D5C7] px-4 py-2.5 text-sm h-20 resize-none focus:outline-none focus:ring-2 focus:ring-[#E8A87C] bg-white text-[#5A3E2B]"></textarea>
+            </div>
+
+            <!-- Payment Method -->
+            <div>
+                <label class="block text-xs font-semibold text-[#6B4226] mb-2">Metode Pembayaran</label>
+                <select name="metode_pembayaran" id="modalMetodePembayaran" required
+                        class="w-full rounded-xl border border-[#E7D5C7] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#E8A87C] bg-white text-[#5A3E2B]">
+                    <option value="cash">💵 Cash (Bayar di Tempat)</option>
+                    <option value="transfer">📱 Transfer Bank (Midtrans)</option>
+                </select>
+            </div>
+
+            <!-- Error message container -->
+            <div id="modalErrorContainer" class="hidden text-xs text-red-500 bg-red-50 p-3 rounded-xl border border-red-200">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitBtn" class="w-full py-3 rounded-2xl text-white font-semibold text-base transition-all duration-300 shadow-md hover:scale-[1.02] active:scale-[0.98]" 
+                    style="background: linear-gradient(90deg, #D96B34, #F2A16B);">
+                <span id="btnText">KONFIRMASI BOOKING</span>
+                <span id="btnSpinner" class="hidden inline-block animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full ml-2 align-middle"></span>
+            </button>
+        </form>
+    </div>
+</div>
+@endauth
 
 <script>
 function toggleDetail(id) {
@@ -496,6 +599,186 @@ function toggleDetail(id) {
         el.classList.add('hidden');
     }
 }
+
+@auth
+function openBookingModal(id, name, price, serviceType) {
+    const modal = document.getElementById('bookingModal');
+    const modalBox = modal.querySelector('div');
+    
+    // Set form fields
+    document.getElementById('modalLayananId').value = id;
+    document.getElementById('modalLayananName').innerText = name;
+    
+    // Format price elegantly
+    const formattedPrice = new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        maximumFractionDigits: 0
+    }).format(price);
+    document.getElementById('modalLayananPrice').innerText = formattedPrice;
+
+    // Pre-select location type based on the service category
+    const locSelect = document.getElementById('modalLocationType');
+    if (serviceType === 'home') {
+        locSelect.value = 'home_service';
+    } else {
+        locSelect.value = 'studio';
+    }
+    toggleAddressField();
+
+    // Reset error container & form
+    const errorContainer = document.getElementById('modalErrorContainer');
+    errorContainer.classList.add('hidden');
+    errorContainer.innerHTML = '';
+    
+    // Reset submit button state
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnSpinner = document.getElementById('btnSpinner');
+    submitBtn.disabled = false;
+    btnText.innerText = 'KONFIRMASI BOOKING';
+    btnSpinner.classList.add('hidden');
+
+    // Show modal with animation
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    modalBox.classList.remove('scale-95');
+    modalBox.classList.add('scale-100');
+    
+    // Disable body scroll when modal is open
+    document.body.classList.add('overflow-hidden');
+}
+
+function closeBookingModal() {
+    const modal = document.getElementById('bookingModal');
+    const modalBox = modal.querySelector('div');
+    
+    // Hide modal with animation
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    modalBox.classList.remove('scale-100');
+    modalBox.classList.add('scale-95');
+    
+    // Enable body scroll
+    document.body.classList.remove('overflow-hidden');
+}
+
+// Close modal if user clicks outside of modal box
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('bookingModal');
+    if (event.target === modal) {
+        closeBookingModal();
+    }
+});
+
+function toggleAddressField() {
+    const locationType = document.getElementById('modalLocationType').value;
+    const addressContainer = document.getElementById('addressContainer');
+    const addressInput = document.getElementById('modalServiceAddress');
+    
+    if (locationType === 'home_service') {
+        addressContainer.classList.remove('hidden');
+        addressInput.setAttribute('required', 'required');
+    } else {
+        addressContainer.classList.add('hidden');
+        addressInput.removeAttribute('required');
+        addressInput.value = '';
+    }
+}
+
+function submitBooking(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('bookingForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnSpinner = document.getElementById('btnSpinner');
+    const errorContainer = document.getElementById('modalErrorContainer');
+    
+    // Clear and hide errors
+    errorContainer.classList.add('hidden');
+    errorContainer.innerHTML = '';
+    
+    // Show spinner & disable button
+    submitBtn.disabled = true;
+    btnText.innerText = 'MEMPROSES...';
+    btnSpinner.classList.remove('hidden');
+    
+    const formData = new FormData(form);
+    
+    fetch("{{ route('customer.booking.store') }}", {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+        },
+        body: formData
+    })
+    .then(response => {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            return response.json().then(data => {
+                if (!response.ok) {
+                    throw data;
+                }
+                return data;
+            });
+        } else {
+            throw new Error("Server mengembalikan respons yang tidak valid (bukan JSON). Silakan hubungi admin.");
+        }
+    })
+    .then(data => {
+        if (data.success) {
+            if (data.payment_type === 'transfer' && data.snap_token) {
+                // If it is transfer, trigger Midtrans Snap
+                window.snap.pay(data.snap_token, {
+                    onSuccess: function(result) {
+                        window.location.href = data.redirect_url + "?status=success";
+                    },
+                    onPending: function(result) {
+                        window.location.href = data.redirect_url + "?status=pending";
+                    },
+                    onError: function(result) {
+                        alert("Pembayaran gagal, silakan coba lagi.");
+                        // Reset button
+                        submitBtn.disabled = false;
+                        btnText.innerText = 'KONFIRMASI BOOKING';
+                        btnSpinner.classList.add('hidden');
+                    },
+                    onClose: function() {
+                        alert("Anda menutup halaman pembayaran sebelum selesai.");
+                        // Redirect to profile anyway so they can see pending booking
+                        window.location.href = data.redirect_url;
+                    }
+                });
+            } else {
+                // If it is cash booking, redirect directly
+                window.location.href = data.redirect_url + "?status=success";
+            }
+        } else {
+            throw new Error(data.message || 'Terjadi kesalahan pada sistem.');
+        }
+    })
+    .catch(error => {
+        console.error('Error booking:', error);
+        
+        // Show validation errors or general error message
+        let errorMsg = 'Terjadi kesalahan. Silakan periksa kembali input Anda.';
+        if (error.errors) {
+            errorMsg = Object.values(error.errors).flat().join('<br>');
+        } else if (error.message) {
+            errorMsg = error.message;
+        }
+        
+        errorContainer.innerHTML = errorMsg;
+        errorContainer.classList.remove('hidden');
+        
+        // Reset button
+        submitBtn.disabled = false;
+        btnText.innerText = 'KONFIRMASI BOOKING';
+        btnSpinner.classList.add('hidden');
+    });
+}
+@endauth
 </script>
 
 </body>

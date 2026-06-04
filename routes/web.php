@@ -20,10 +20,6 @@ Route::get('/service', function () {
     return view('service');
 });
 
-Route::get('/blog', function () {
-    return view('blog');
-});
-
 /* BOOKING HARUS LOGIN */
 //Route::get('/booking', function () {
 //   return view('booking');

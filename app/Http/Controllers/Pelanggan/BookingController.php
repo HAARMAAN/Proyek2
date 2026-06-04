@@ -40,6 +40,12 @@ class BookingController extends Controller
         // --- (Cek Jam Operasional Tetap Sama) ---
         $startHour = $startTime->format('H:i');
         if ($startHour < '09:00' || $startHour > '17:00' || $endTimeWithBuffer->format('H:i') > '17:00') {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Jadwal harus antara 09:00 - 17:00.'
+                ], 422);
+            }
             return back()->withErrors(['booking_time' => 'Jadwal harus antara 09:00 - 17:00.'])->withInput();
         }
 
@@ -52,6 +58,12 @@ class BookingController extends Controller
             })->exists();
 
         if ($isBusy) {
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Maaf, jam tersebut sudah terisi.'
+                ], 422);
+            }
             return back()->withErrors(['booking_time' => 'Maaf, jam tersebut sudah terisi.'])->withInput();
         }
 
@@ -109,11 +121,28 @@ class BookingController extends Controller
             // Simpan snap_token ke database agar bisa dipanggil lagi di riwayat jika perlu
             $booking->update(['snap_token' => $snapToken]);
 
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'payment_type' => 'transfer',
+                    'snap_token' => $snapToken,
+                    'redirect_url' => route('customer.dashboard'),
+                ]);
+            }
+
             return view('pelanggan.booking.checkout', compact('snapToken', 'booking'));
         }
         // ==========================================
         // LOGIKA MIDTRANS END
         // ==========================================
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'payment_type' => 'cash',
+                'redirect_url' => route('customer.dashboard'),
+            ]);
+        }
 
         return redirect()->route('customer.riwayat')->with('success', 'Booking berhasil (Cash)!');
     }

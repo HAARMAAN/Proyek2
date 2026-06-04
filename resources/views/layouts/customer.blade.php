@@ -129,6 +129,9 @@ body {
 
         <!-- MENU -->
         <nav class="nav-menu">
+            @auth
+            <a href="{{ route('home') }}" class="nav-link" style="color: #d66a2f; font-weight: 600;">Kembali ke Layanan</a>
+            @endauth
             <a href="{{ route('customer.riwayat') }}" class="nav-link">Riwayat</a>
             <a href="{{ route('customer.loyalitas') }}" class="nav-link">Loyalitas</a>
 
