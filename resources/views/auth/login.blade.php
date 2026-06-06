@@ -153,6 +153,19 @@ body {
 .back a:hover {
     color: #d66a2f;
 }
+
+/* ALERT STATUS */
+.alert-status {
+    background-color: #fcf3eb;
+    border: 1px solid #f5dcd0;
+    color: #c4571e;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 13.5px;
+    text-align: left;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
 </style>
 
 <div class="login-wrapper">
@@ -169,6 +182,12 @@ body {
     <!-- TITLE -->
     <div class="title">Welcome Back</div>
     <div class="subtitle">Masuk ke akun Luna Home Beauty</div>
+
+    @if (session('status'))
+        <div class="alert-status">
+            {{ session('status') }}
+        </div>
+    @endif
 
     <form method="POST" action="{{ route('login') }}">
         @csrf

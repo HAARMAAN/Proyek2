@@ -15,4 +15,4 @@ use App\Http\Controllers\WebhookController;
 */
 
 // Endpoint untuk menerima notifikasi otomatis dari Midtrans
-Route::post('/midt rans-callback', [WebhookController::class, 'handler']);
+Route::post('/midtrans-callback', [WebhookController::class, 'handler']);

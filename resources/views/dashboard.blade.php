@@ -50,8 +50,18 @@
                                 <td class="py-4">{{ $bt->pelanggan->nama_lengkap }}</td>
                                 <td class="py-4 text-gray-600 text-sm">{{ $bt->layanan->layanan_name }}</td>
                                 <td class="py-4">
-                                    <span class="px-2 py-1 rounded-full text-xs font-bold {{ $bt->status_booking == 'pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-blue-100 text-blue-700' }}">
-                                        {{ strtoupper($bt->status_booking) }}
+                                    @php
+                                        $statusBadge = [
+                                            'pending'              => 'bg-yellow-100 text-yellow-700',
+                                            'waiting_confirmation' => 'bg-blue-100 text-blue-700',
+                                            'confirmed'            => 'bg-green-100 text-green-700',
+                                            'completed'            => 'bg-purple-100 text-purple-700',
+                                            'cancelled'            => 'bg-red-100 text-red-700',
+                                            'expired'              => 'bg-gray-100 text-gray-500',
+                                        ];
+                                    @endphp
+                                    <span class="px-2 py-1 rounded-full text-xs font-bold {{ $statusBadge[$bt->status_booking] ?? 'bg-gray-100 text-gray-600' }}">
+                                        {{ \App\Models\Booking::STATUS_LABELS[$bt->status_booking] ?? strtoupper($bt->status_booking) }}
                                     </span>
                                 </td>
                                 <td class="py-4 text-right">

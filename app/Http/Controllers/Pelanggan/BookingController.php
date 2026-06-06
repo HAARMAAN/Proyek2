@@ -51,7 +51,7 @@ class BookingController extends Controller
 
         // --- (Cek Bentrok Jadwal Tetap Sama) ---
         $isBusy = Booking::where('booking_date', $request->booking_date)
-            ->where('status_booking', '!=', 'cancelled')
+            ->whereNotIn('status_booking', ['cancelled', 'expired'])
             ->where(function ($query) use ($startTime, $endTimeWithBuffer) {
                 $query->where('booking_time', '<', $endTimeWithBuffer->format('H:i:s'))
                     ->where('booking_end_time', '>', $startTime->format('H:i:s'));
@@ -74,17 +74,22 @@ class BookingController extends Controller
         $totalBayar = $hargaAsli - ($hargaAsli * $persenDiskon);
 
         // --- 5. Simpan Data Booking ke Database ---
+        // Transfer: status pending (menunggu pembayaran Midtrans)
+        // Cash: langsung waiting_confirmation (admin konfirmasi saat datang)
+        $statusAwal = ($request->metode_pembayaran == 'transfer') ? 'pending' : 'waiting_confirmation';
+
         $booking = Booking::create([
-            'user_id' => $user->id,
-            'layanan_id' => $request->layanan_id,
-            'booking_date' => $request->booking_date,
-            'booking_time' => $startTime->format('H:i:s'),
+            'user_id'          => $user->id,
+            'layanan_id'       => $request->layanan_id,
+            'booking_date'     => $request->booking_date,
+            'booking_time'     => $startTime->format('H:i:s'),
             'booking_end_time' => $endTimeWithBuffer->format('H:i:s'),
-            'location_type' => $request->location_type,
-            'service_address' => $request->service_address,
-            'metode_pembayaran' => $request->metode_pembayaran,
-            'status_booking' => 'pending',
-            'total_price' => $totalBayar,
+            'location_type'    => $request->location_type,
+            'service_address'  => $request->service_address,
+            'metode_pembayaran'=> $request->metode_pembayaran,
+            'status_booking'   => $statusAwal,
+            'payment_status'   => 'unpaid',
+            'total_price'      => $totalBayar,
         ]);
 
         // ==========================================

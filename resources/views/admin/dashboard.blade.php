@@ -205,17 +205,28 @@
 
                 </div>
 
+                @php
+                    $statusColors = [
+                        'pending'              => ['bg' => '#FFF8E1', 'fg' => '#F59E0B'],
+                        'waiting_confirmation' => ['bg' => '#E0F2FE', 'fg' => '#0369A1'],
+                        'confirmed'            => ['bg' => '#DCFCE7', 'fg' => '#15803D'],
+                        'completed'            => ['bg' => '#F3E8FF', 'fg' => '#7E22CE'],
+                        'cancelled'            => ['bg' => '#FDECEC', 'fg' => '#E10303'],
+                        'expired'              => ['bg' => '#F3F4F6', 'fg' => '#6B7280'],
+                    ];
+                    $statusLabels = \App\Models\Booking::STATUS_LABELS;
+                    $sBg = $statusColors[$bt->status_booking]['bg'] ?? '#F3E3D7';
+                    $sFg = $statusColors[$bt->status_booking]['fg'] ?? '#7A5C48';
+                @endphp
                 <span style="
                     padding: 5px 12px;
                     border-radius: 14px;
                     font-size: 11px;
                     font-weight: 600;
-                    background: {{ $bt->status_booking == 'pending' ? '#ffe7d7' : '#dff3e3' }};
-                    color: {{ $bt->status_booking == 'pending' ? '#d66a2f' : '#2e7d32' }};
-                ">
-
-                    {{ $bt->status_booking == 'pending' ? 'Menunggu' : 'Selesai' }}
-
+                    background: {{ $sBg }};
+                    color: {{ $sFg }};
+">
+                    {{ $statusLabels[$bt->status_booking] ?? $bt->status_booking }}
                 </span>
 
             </div>

@@ -1,39 +1,188 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
+<link href="https://fonts.bunny.net/css?family=playfair-display:600,700|poppins:400,500,600" rel="stylesheet" />
 
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4efe9;
+}
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+/* WRAPPER */
+.login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* CARD */
+.login-card {
+    background: #ffffff;
+    padding: 45px 35px;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: 0.3s;
+}
+
+.login-card:hover {
+    transform: translateY(-3px);
+}
+
+/* LOGO */
+.logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.logo img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+}
+
+/* TITLE */
+.title {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    color: #4e3629;
+    margin-bottom: 6px;
+}
+
+.subtitle {
+    color: #d66a2f;
+    font-size: 14px;
+    margin-bottom: 28px;
+}
+
+/* INPUT */
+.input-group {
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    font-size: 13px;
+    color: #6d5244;
+    font-weight: 500;
+}
+
+.input-field {
+    width: 100%;
+    padding: 13px 14px;
+    border-radius: 12px;
+    border: 1px solid #e7d8c9;
+    margin-top: 6px;
+    outline: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.input-field::placeholder {
+    color: #b7a79a;
+}
+
+.input-field:focus {
+    border-color: #d66a2f;
+    box-shadow: 0 0 0 2px rgba(214,106,47,0.15);
+}
+
+/* BUTTON */
+.btn-login {
+    width: 100%;
+    background: #d66a2f;
+    color: white;
+    padding: 13px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: 0.3s;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background: #bf5b25;
+    transform: scale(1.02);
+}
+
+/* BACK */
+.back {
+    margin-top: 22px;
+    font-size: 13px;
+    color: #7a5c48;
+}
+
+.back a {
+    color: #7a5c48;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.back a:hover {
+    color: #d66a2f;
+}
+</style>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        
+        <!-- LOGO -->
+        <div style="display:flex; justify-content:center; margin-bottom:18px;">
+            <img src="/images/LHB.png" alt="Logo Luna" style="width:90px; height:90px; object-fit:contain;">
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        <!-- TITLE -->
+        <div class="title">Atur Ulang Sandi</div>
+        <div class="subtitle">Buat kata sandi baru untuk akun Anda</div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+        <form method="POST" action="{{ route('password.store') }}">
+            @csrf
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
+            <!-- Password Reset Token -->
+            <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+            <!-- EMAIL ADDRESS -->
+            <div class="input-group">
+                <label>Alamat Email</label>
+                <input type="email" name="email" class="input-field"
+                       value="{{ old('email', $request->email) }}" required readonly style="background-color: #f5eedf; color: #7a5c48;">
+                <x-input-error :messages="$errors->get('email')" class="mt-1" />
+            </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
+            <!-- PASSWORD -->
+            <div class="input-group">
+                <label>Kata Sandi Baru</label>
+                <input type="password" name="password" class="input-field"
+                       placeholder="Masukkan kata sandi baru" required autofocus>
+                <x-input-error :messages="$errors->get('password')" class="mt-1" />
+            </div>
+
+            <!-- CONFIRM PASSWORD -->
+            <div class="input-group">
+                <label>Konfirmasi Kata Sandi Baru</label>
+                <input type="password" name="password_confirmation" class="input-field"
+                       placeholder="Masukkan kembali kata sandi baru" required>
+                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
+            </div>
+
+            <!-- BUTTON -->
+            <button type="submit" class="btn-login" style="margin-top:15px;">
+                Simpan Kata Sandi Baru
+            </button>
+
+            <!-- BACK -->
+            <div class="back">
+                ← <a href="{{ route('login') }}">Batal dan kembali masuk</a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
 </x-guest-layout>

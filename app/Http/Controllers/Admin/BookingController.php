@@ -18,12 +18,12 @@ class BookingController extends Controller
     {
         $query = Booking::with(['user', 'layanan']);
 
-        $status = $request->query('status', 'pending');
+        $status = $request->query('status', 'waiting_confirmation');
 
-        if (in_array($status, ['pending', 'confirmed', 'completed', 'cancelled'])) {
+        if (in_array($status, ['pending', 'waiting_confirmation', 'confirmed', 'completed', 'cancelled', 'expired'])) {
             $query->where('status_booking', $status);
         } else {
-            $query->where('status_booking', 'pending');
+            $query->where('status_booking', 'waiting_confirmation');
         }
 
         $bookings = $query->latest()->get();
@@ -36,7 +36,7 @@ class BookingController extends Controller
      */
     public function history()
     {
-        $bookings = Booking::whereIn('status_booking', ['completed', 'cancelled'])
+        $bookings = Booking::whereIn('status_booking', ['completed', 'cancelled', 'expired'])
                     ->with(['user', 'layanan'])
                     ->latest()
                     ->get();
@@ -50,7 +50,7 @@ class BookingController extends Controller
     public function updateStatus(Request $request, $id, WhatsAppService $waService)
     {
         $request->validate([
-            'status_booking' => 'required|in:pending,confirmed,completed,cancelled'
+            'status_booking' => 'required|in:confirmed,completed,cancelled'
         ]);
 
         $booking = Booking::with(['user', 'layanan'])->findOrFail($id);

@@ -7,20 +7,48 @@ use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Carbon\Carbon;
 
 class NewPasswordController extends Controller
 {
     /**
      * Display the password reset view.
      */
-    public function create(Request $request): View
+    public function create(Request $request): View|RedirectResponse
     {
+        $token = $request->route('token');
+        $email = $request->email;
+
+        $record = DB::table('password_resets')
+            ->where('token', $token)
+            ->where('email', $email)
+            ->first();
+
+        if (!$record) {
+            return redirect()->route('password.request')->withErrors([
+                'email' => 'Tautan atur ulang kata sandi tidak valid atau telah kedaluwarsa.',
+            ]);
+        }
+
+        // Cek apakah token kedaluwarsa (lebih dari 60 menit)
+        $createdAt = Carbon::parse($record->created_at);
+        if ($createdAt->addMinutes(60)->isPast()) {
+            DB::table('password_resets')
+                ->where('token', $token)
+                ->where('email', $email)
+                ->delete();
+
+            return redirect()->route('password.request')->withErrors([
+                'email' => 'Tautan atur ulang kata sandi telah kedaluwarsa.',
+            ]);
+        }
+
         return view('auth.reset-password', ['request' => $request]);
     }
 
@@ -37,27 +65,52 @@ class NewPasswordController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user) use ($request) {
-                $user->forceFill([
-                    'password' => Hash::make($request->password),
-                    'remember_token' => Str::random(60),
-                ])->save();
+        $record = DB::table('password_resets')
+            ->where('token', $request->token)
+            ->where('email', $request->email)
+            ->first();
 
-                event(new PasswordReset($user));
-            }
-        );
+        if (!$record) {
+            throw ValidationException::withMessages([
+                'email' => 'Tautan atur ulang kata sandi tidak valid atau telah kedaluwarsa.',
+            ]);
+        }
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                        ->withErrors(['email' => __($status)]);
+        // Cek kedaluwarsa token
+        $createdAt = Carbon::parse($record->created_at);
+        if ($createdAt->addMinutes(60)->isPast()) {
+            DB::table('password_resets')
+                ->where('token', $request->token)
+                ->where('email', $request->email)
+                ->delete();
+
+            throw ValidationException::withMessages([
+                'email' => 'Tautan atur ulang kata sandi telah kedaluwarsa.',
+            ]);
+        }
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'email' => 'Kami tidak dapat menemukan pengguna dengan alamat email tersebut.',
+            ]);
+        }
+
+        // Update password
+        $user->forceFill([
+            'password' => Hash::make($request->password),
+            'remember_token' => Str::random(60),
+        ])->save();
+
+        event(new PasswordReset($user));
+
+        // Hapus token setelah berhasil digunakan
+        DB::table('password_resets')
+            ->where('token', $request->token)
+            ->where('email', $request->email)
+            ->delete();
+
+        return redirect()->route('login')->with('status', 'Kata sandi Anda berhasil diatur ulang! Silakan masuk dengan kata sandi baru Anda.');
     }
 }

@@ -40,12 +40,18 @@
                             <td class="px-6 py-4">
                                 @php
                                     $colors = [
-                                        'completed' => 'bg-green-100 text-green-700',
-                                        'cancelled' => 'bg-red-100 text-red-700',
+                                        'waiting_confirmation' => 'bg-blue-100 text-blue-700',
+                                        'confirmed'            => 'bg-green-100 text-green-700',
+                                        'completed'            => 'bg-purple-100 text-purple-700',
+                                        'cancelled'            => 'bg-red-100 text-red-700',
+                                        'expired'              => 'bg-gray-100 text-gray-500',
                                     ];
                                     $labels = [
-                                        'completed' => 'selesai',
-                                        'cancelled' => 'dibatalkan',
+                                        'waiting_confirmation' => 'Menunggu Konfirmasi',
+                                        'confirmed'            => 'Dikonfirmasi',
+                                        'completed'            => 'Selesai',
+                                        'cancelled'            => 'Dibatalkan',
+                                        'expired'              => 'Kedaluwarsa',
                                     ];
                                 @endphp
                                 <span class="px-3 py-1 rounded-full text-xs font-bold {{ $colors[$item->status_booking] ?? 'bg-gray-100 text-gray-600' }}">

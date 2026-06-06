@@ -32,15 +32,27 @@
                         <td style="padding: 20px 15px; text-align: center;">
                             @php
                                 $statusColor = match($booking->status_booking) {
-                                    'pending' => '#FFD180',
-                                    'confirmed' => '#B3E5FC',
-                                    'completed' => '#C8E6C9',
-                                    'cancelled' => '#FFCDD2',
-                                    default => '#F5F5F5'
+                                    'pending'              => '#FFF8E1',
+                                    'waiting_confirmation' => '#E0F2FE',
+                                    'confirmed'            => '#DCFCE7',
+                                    'completed'            => '#C8E6C9',
+                                    'cancelled'            => '#FFCDD2',
+                                    'expired'              => '#F3F4F6',
+                                    default                => '#F5F5F5'
                                 };
+                                $statusTextColor = match($booking->status_booking) {
+                                    'pending'              => '#F59E0B',
+                                    'waiting_confirmation' => '#0369A1',
+                                    'confirmed'            => '#15803D',
+                                    'completed'            => '#2E7D32',
+                                    'cancelled'            => '#C62828',
+                                    'expired'              => '#6B7280',
+                                    default                => '#555'
+                                };
+                                $statusLabels = \App\Models\Booking::STATUS_LABELS;
                             @endphp
-                            <span style="background: {{ $statusColor }}; padding: 8px 16px; border-radius: 12px; font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px;">
-                                {{ $booking->status_booking }}
+                            <span style="background: {{ $statusColor }}; color: {{ $statusTextColor }}; padding: 8px 16px; border-radius: 12px; font-size: 12px; font-weight: 900; letter-spacing: 0.5px;">
+                                {{ $statusLabels[$booking->status_booking] ?? $booking->status_booking }}
                             </span>
                         </td>
                     </tr>

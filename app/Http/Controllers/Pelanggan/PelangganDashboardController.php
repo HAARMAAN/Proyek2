@@ -22,7 +22,7 @@ class PelangganDashboardController extends Controller
         'user' => $user,
         'myBookings' => $myBookings,
         // Sesuaikan query dengan status 'completed' dan 'pending'
-        'bookingMenunggu' => Booking::where('user_id', $user->id)->where('status_booking', 'pending')->count(),
+        'bookingMenunggu' => Booking::where('user_id', $user->id)->whereIn('status_booking', ['pending', 'waiting_confirmation'])->count(),
         'totalBookingSelesai' => Booking::where('user_id', $user->id)->where('status_booking', 'completed')->count(),
         'totalLayanan' => \App\Models\Layanan::count(),
     ]);

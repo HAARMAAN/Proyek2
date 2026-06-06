@@ -25,4 +25,5 @@ public function down(): void
             $table->dropColumn('location_type');
         });
     }
-)
+    }
+};

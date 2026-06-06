@@ -22,9 +22,48 @@ class Booking extends Model
         'service_address',
         'metode_pembayaran',
         'status_booking',
+        'payment_status',
         'bukti_pembayaran',
         'total_price', // Kolom baru untuk harga setelah diskon
     ];
+
+    /**
+     * Mapping status_booking ke label Bahasa Indonesia
+     */
+    public const STATUS_LABELS = [
+        'pending'              => 'Menunggu Pembayaran',
+        'waiting_confirmation' => 'Menunggu Konfirmasi',
+        'confirmed'            => 'Dikonfirmasi',
+        'completed'            => 'Selesai',
+        'cancelled'            => 'Dibatalkan',
+        'expired'              => 'Kedaluwarsa',
+    ];
+
+    /**
+     * Mapping payment_status ke label Bahasa Indonesia
+     */
+    public const PAYMENT_LABELS = [
+        'unpaid'  => 'Belum Bayar',
+        'paid'    => 'Sudah Bayar',
+        'failed'  => 'Gagal',
+        'expired' => 'Kedaluwarsa',
+    ];
+
+    /**
+     * Mendapatkan label Indonesia untuk status_booking
+     */
+    public function getStatusLabelAttribute(): string
+    {
+        return self::STATUS_LABELS[$this->status_booking] ?? $this->status_booking;
+    }
+
+    /**
+     * Mendapatkan label Indonesia untuk payment_status
+     */
+    public function getPaymentLabelAttribute(): string
+    {
+        return self::PAYMENT_LABELS[$this->payment_status] ?? $this->payment_status;
+    }
 
     public function user(): BelongsTo
     {

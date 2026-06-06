@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -27,19 +29,33 @@ class PasswordResetLinkController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'exists:users,email'],
+        ], [
+            'email.exists' => 'Kami tidak dapat menemukan akun dengan alamat email tersebut.',
         ]);
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        // Generate token baru
+        $token = Str::random(60);
 
-        return $status == Password::RESET_LINK_SENT
-                    ? back()->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                        ->withErrors(['email' => __($status)]);
+        // Hapus token lama untuk email ini jika ada
+        DB::table('password_resets')->where('email', $request->email)->delete();
+
+        // Simpan ke tabel password_resets
+        DB::table('password_resets')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => now(),
+        ]);
+
+        // Kirim email reset password
+        $resetUrl = route('password.reset', ['token' => $token, 'email' => $request->email]);
+        Mail::send('emails.reset-password', [
+            'reset_url' => $resetUrl
+        ], function ($message) use ($request) {
+            $message->to($request->email)
+                    ->subject('Atur Ulang Kata Sandi - Luna Home Beauty');
+        });
+
+        return back()->with('status', 'Tautan atur ulang kata sandi telah dikirim ke email Anda.');
     }
 }

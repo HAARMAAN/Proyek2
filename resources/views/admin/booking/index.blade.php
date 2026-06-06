@@ -29,16 +29,28 @@
             <div class="flex flex-wrap gap-3 mb-6 bg-white p-3 rounded-[24px] border border-[#F3E3D7]"
                  style="box-shadow: 0 10px 30px rgba(217,107,52,0.08);">
 
-                {{-- MENUNGGU --}}
-                <a href="{{ route('admin.booking.index', ['status' => 'pending']) }}"
+                {{-- MENUNGGU KONFIRMASI (default) --}}
+                <a href="{{ route('admin.booking.index', ['status' => 'waiting_confirmation']) }}"
                    class="px-5 py-3 text-sm font-semibold rounded-2xl transition
-                   {{ request('status', 'pending') == 'pending'
+                   {{ request('status', 'waiting_confirmation') == 'waiting_confirmation'
                         ? 'text-white shadow-md'
                         : 'bg-[#FFF7F1] text-[#7A5C48] hover:bg-[#F8ECE3]' }}"
-                   style="{{ request('status', 'pending') == 'pending'
+                   style="{{ request('status', 'waiting_confirmation') == 'waiting_confirmation'
                         ? 'background-color: #D96B34;'
                         : '' }}">
-                    Menunggu
+                    ✅ Menunggu Konfirmasi
+                </a>
+
+                {{-- MENUNGGU BAYAR --}}
+                <a href="{{ route('admin.booking.index', ['status' => 'pending']) }}"
+                   class="px-5 py-3 text-sm font-semibold rounded-2xl transition
+                   {{ request('status') == 'pending'
+                        ? 'text-white shadow-md'
+                        : 'bg-[#FFF7F1] text-[#7A5C48] hover:bg-[#F8ECE3]' }}"
+                   style="{{ request('status') == 'pending'
+                        ? 'background-color: #D96B34;'
+                        : '' }}">
+                    ⏳ Menunggu Bayar
                 </a>
 
                 {{-- DIKONFIRMASI --}}
@@ -75,6 +87,18 @@
                         ? 'background-color: #D96B34;'
                         : '' }}">
                     Dibatalkan
+                </a>
+
+                {{-- KEDALUWARSA --}}
+                <a href="{{ route('admin.booking.index', ['status' => 'expired']) }}"
+                   class="px-5 py-3 text-sm font-semibold rounded-2xl transition
+                   {{ request('status') == 'expired'
+                        ? 'text-white shadow-md'
+                        : 'bg-[#FFF7F1] text-[#7A5C48] hover:bg-[#F8ECE3]' }}"
+                   style="{{ request('status') == 'expired'
+                        ? 'background-color: #9e6e55;'
+                        : '' }}">
+                    ⌛ Kedaluwarsa
                 </a>
 
             </div>
@@ -145,25 +169,27 @@
 
                                     @php
                                         $colors = [
-                                            'pending' => 'background-color: #FFF1E8; color: #D96B34;',
-                                            'confirmed' => 'background-color: #FFF1E8; color: #D96B34;',
-                                            'completed' => 'background-color: #FFF1E8; color: #D96B34;',
-                                            'cancelled' => 'background-color: #FDECEC; color: #E10303;',
+                                            'pending'              => 'background-color: #FFF8E1; color: #F59E0B;',
+                                            'waiting_confirmation' => 'background-color: #E0F2FE; color: #0369A1;',
+                                            'confirmed'            => 'background-color: #DCFCE7; color: #15803D;',
+                                            'completed'            => 'background-color: #F3E8FF; color: #7E22CE;',
+                                            'cancelled'            => 'background-color: #FDECEC; color: #E10303;',
+                                            'expired'              => 'background-color: #F3F4F6; color: #6B7280;',
                                         ];
 
                                         $labels = [
-                                            'pending' => 'Menunggu',
-                                            'confirmed' => 'Dikonfirmasi',
-                                            'completed' => 'Selesai',
-                                            'cancelled' => 'Dibatalkan',
+                                            'pending'              => 'Menunggu Bayar',
+                                            'waiting_confirmation' => 'Menunggu Konfirmasi',
+                                            'confirmed'            => 'Dikonfirmasi',
+                                            'completed'            => 'Selesai',
+                                            'cancelled'            => 'Dibatalkan',
+                                            'expired'              => 'Kedaluwarsa',
                                         ];
                                     @endphp
 
                                     <span class="px-4 py-2 rounded-full text-xs font-semibold"
                                           style="{{ $colors[$item->status_booking] ?? 'background-color:#F3E3D7; color:#7A5C48;' }}">
-
                                         {{ $labels[$item->status_booking] ?? $item->status_booking }}
-
                                     </span>
 
                                 </td>
@@ -171,7 +197,7 @@
                                 {{-- AKSI --}}
                                 <td class="px-6 py-5">
 
-                                    @if(in_array($item->status_booking, ['completed', 'cancelled']))
+                                    @if(in_array($item->status_booking, ['completed', 'cancelled', 'expired']))
 
                                         <span class="text-[11px] px-3 py-2 rounded-full font-semibold"
                                               style="background-color: #FFF7F1; color: #B98A68;">
@@ -216,18 +242,10 @@
 
                                                     <button name="status_booking"
                                                             type="submit"
-                                                            value="pending"
-                                                            class="w-full text-left px-5 py-4 text-sm hover:bg-[#FFF7F1] transition"
-                                                            style="color: #7A5C48;">
-                                                        Menunggu
-                                                    </button>
-
-                                                    <button name="status_booking"
-                                                            type="submit"
                                                             value="confirmed"
-                                                            class="w-full text-left px-5 py-4 text-sm hover:bg-[#FFF7F1] transition"
-                                                            style="color: #7A5C48;">
-                                                        Dikonfirmasi
+                                                            class="w-full text-left px-5 py-4 text-sm hover:bg-[#DCFCE7] transition"
+                                                            style="color: #15803D;">
+                                                        ✅ Dikonfirmasi
                                                     </button>
 
                                                     <button name="status_booking"
@@ -235,7 +253,7 @@
                                                             value="completed"
                                                             class="w-full text-left px-5 py-4 text-sm hover:bg-[#FFF7F1] transition border-t border-[#F3E3D7]"
                                                             style="color: #D96B34;">
-                                                        Selesai
+                                                        ✨ Selesai
                                                     </button>
 
                                                     <button name="status_booking"
@@ -243,7 +261,7 @@
                                                             value="cancelled"
                                                             class="w-full text-left px-5 py-4 text-sm hover:bg-[#FDECEC] transition border-t border-[#F3E3D7]"
                                                             style="color: #E10303;">
-                                                        Batalkan
+                                                        ❌ Batalkan
                                                     </button>
 
                                                 </form>

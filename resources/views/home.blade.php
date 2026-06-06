@@ -541,9 +541,35 @@ Facial membantu membersihkan pori-pori dan membuat kulit lebih cerah.
                            class="w-full rounded-xl border border-[#E7D5C7] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#E8A87C] bg-white text-[#5A3E2B]">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-[#6B4226] mb-2">Jam Booking</label>
-                    <input type="time" name="booking_time" id="modalBookingTime" required 
-                           class="w-full rounded-xl border border-[#E7D5C7] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#E8A87C] bg-white text-[#5A3E2B]">
+                    <label class="block text-xs font-semibold text-[#6B4226] mb-2">
+                        Jam Booking
+                    </label>
+
+                    <select
+                        name="booking_time"
+                        id="modalBookingTime"
+                        required
+                        class="w-full rounded-xl border border-[#E7D5C7] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#E8A87C] bg-white text-[#5A3E2B]">
+
+                        <option value="">Pilih Jam</option>
+                        <option value="09:00">09:00 AM</option>
+                        <option value="09:30">09:30 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="10:30">10:30 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="11:30">11:30 AM</option>
+                        <option value="12:00">12:00 PM</option>
+                        <option value="12:30">12:30 PM</option>
+                        <option value="13:00">13:00 PM</option>
+                        <option value="13:30">13:30 PM</option>
+                        <option value="14:00">14:00 PM</option>
+                        <option value="14:30">14:30 PM</option>
+                        <option value="15:00">15:00 PM</option>
+                        <option value="15:30">15:30 PM</option>
+                        <option value="16:00">16:00 PM</option>
+                        <option value="16:30">16:30 PM</option>
+                        <option value="17:00">17:00 PM</option>
+                    </select>
                 </div>
             </div>
 

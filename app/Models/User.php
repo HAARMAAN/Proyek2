@@ -20,6 +20,8 @@ class User extends Authenticatable
         'role',
         'total_kunjungan',
         'bintang_loyalitas',
+        'is_verified',
+        'verification_token',
     ];
 
     protected $hidden = [
@@ -34,6 +36,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'total_kunjungan' => 'integer',
             'bintang_loyalitas' => 'integer',
+            'is_verified' => 'boolean',
         ];
     }
 
@@ -44,5 +47,12 @@ class User extends Authenticatable
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class, 'user_id');
+    }
+
+    public function prunable()
+    {
+        // Hapus akun yang belum diverifikasi DAN sudah dibuat lebih dari 3 hari yang lalu
+        return static::where('is_verified', 0)
+                     ->where('created_at', '<=', now()->subDays(3));
     }
 }

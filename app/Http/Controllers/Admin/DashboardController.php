@@ -14,7 +14,7 @@ class DashboardController extends Controller
     public function index()
     {
         $totalPelanggan = User::where('role', 'pelanggan')->count();
-        $bookingMenunggu = Booking::where('status_booking', 'pending')->count();
+        $bookingMenunggu = Booking::where('status_booking', 'waiting_confirmation')->count();
         $totalBookingSelesai = Booking::where('status_booking', 'completed')->count();
         $totalLayanan = Layanan::count();
         $bookingTerbaru = Booking::with(['user', 'layanan'])->latest()->take(5)->get();

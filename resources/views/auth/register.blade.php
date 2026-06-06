@@ -179,6 +179,7 @@ body {
             <input type="text" name="whatsapp_number" class="input-field"
                    placeholder="08xxxxxxxxxx"
                    value="{{ old('whatsapp_number') }}" required>
+            <x-input-error :messages="$errors->get('whatsapp_number')" class="mt-1" />
         </div>
 
         <!-- ALAMAT -->
@@ -186,6 +187,7 @@ body {
             <label>Alamat Lengkap</label>
             <textarea name="alamat" class="textarea-field"
                       placeholder="Masukkan alamat lengkap">{{ old('alamat') }}</textarea>
+            <x-input-error :messages="$errors->get('alamat')" class="mt-1" />
         </div>
 
         <!-- EMAIL -->

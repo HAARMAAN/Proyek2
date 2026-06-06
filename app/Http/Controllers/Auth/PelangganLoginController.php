@@ -23,8 +23,18 @@ class PelangganLoginController extends Controller
 
         // KUNCINYA DI SINI: Kita pakai guard 'pelanggan'
         if (Auth::guard('pelanggan')->attempt($credentials)) {
+            $user = Auth::guard('pelanggan')->user();
+            
+            // CEK VERIFIKASI: Jika belum verifikasi email, tolak login
+            if ($user->role === 'pelanggan' && !$user->is_verified) {
+                Auth::guard('pelanggan')->logout();
+                return back()->withErrors([
+                    'email' => 'Akun Anda belum aktif. Silakan verifikasi email Anda terlebih dahulu.',
+                ]);
+            }
+
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/home');
         }
 
         return back()->withErrors([
